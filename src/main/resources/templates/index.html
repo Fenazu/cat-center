@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Center — Adoção de Gatos em São Paulo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,600;0,700;1,600;1,700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="/" class="navbar-logo">
+                <div class="logo-crop">
+                    <img th:src="@{/images/logo-cat.png}" alt="">
+                </div>
+                <span class="brand-name">Cat Center</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#gatos">Gatos</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+            <a href="#gatos" class="btn btn-primary">Adotar agora</a>
+        </div>
+    </nav>
+
+    <main>
+
+        <section class="hero">
+            <div class="hero-left">
+                <span class="hero-eyebrow">🐾 Adoção Responsável · São Paulo, SP</span>
+                <h1 class="hero-title">
+                    Todo gatinho<br>
+                    <em>merece um lar</em>
+                </h1>
+                <p class="hero-body">
+                    Encontre o companheiro perfeito para a sua família. Perfis completos com fotos reais, características e suporte em cada etapa da adoção.
+                </p>
+                <div class="hero-actions">
+                    <a href="#gatos" class="btn btn-primary btn-lg">Ver gatos disponíveis</a>
+                    <a href="#sobre" class="btn btn-ghost btn-lg">Como funciona</a>
+                </div>
+                <div class="hero-trust">
+                    <div class="trust-item">
+                        <strong>3</strong>
+                        <span>disponíveis</span>
+                    </div>
+                    <div class="trust-sep"></div>
+                    <div class="trust-item">
+                        <strong>São Paulo</strong>
+                        <span>SP, Brasil</span>
+                    </div>
+                    <div class="trust-sep"></div>
+                    <div class="trust-item">
+                        <strong>Gratuito</strong>
+                        <span>sem taxas</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-right">
+                <div class="hero-img-wrap">
+                    <img th:src="@{/images/orpheu.jpeg}" alt="Orpheu, disponível para adoção" class="hero-img">
+                    <div class="hero-badge">
+                        <span class="badge-dot"></span>
+                        Disponível para adoção
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="gatos" id="gatos">
+            <div class="gatos-head">
+                <div class="gatos-title-wrap">
+                    <span class="section-label">Adote hoje</span>
+                    <h2>Gatinhos esperando por você</h2>
+                    <p>Veja características, idade e temperamento antes de entrar em contato.</p>
+                </div>
+                <div class="filter-row">
+                    <button class="pill active">Todos</button>
+                    <button class="pill">Filhote</button>
+                    <button class="pill">Adulto</button>
+                    <button class="pill">Macho</button>
+                    <button class="pill">Fêmea</button>
+                    <button class="pill">Pelo curto</button>
+                </div>
+            </div>
+
+            <div class="cards">
+
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-photo-wrap">
+                                <img th:src="@{/images/orpheu.jpeg}" alt="Orpheu" class="card-foto">
+                                <div class="card-status-badge">
+                                    <span class="status-dot"></span> Disponível
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-traits">
+                                    <span class="trait trait-age">Adulto</span>
+                                    <span class="trait trait-male">Macho</span>
+                                    <span class="trait trait-coat">Semi-longo</span>
+                                </div>
+                                <div class="card-info">
+                                    <h3 class="card-nome">Orpheu</h3>
+                                    <p class="card-local">📍 São Paulo, SP</p>
+                                </div>
+                                <p class="card-brief">Carinhoso e tranquilo, ideal para quem busca companhia no lar.</p>
+                                <div class="card-acoes">
+                                    <button class="btn btn-outline" onclick="virarCard(this)">Saber mais</button>
+                                    <a href="#" class="btn btn-primary">Adotar</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-back-body">
+                                <div class="back-head">
+                                    <h3>Orpheu</h3>
+                                    <span class="trait-personality">Em destaque</span>
+                                </div>
+                                <ul class="detail-list">
+                                    <li><span class="detail-label">Sexo</span><span class="detail-value">Macho</span></li>
+                                    <li><span class="detail-label">Idade</span><span class="detail-value">Adulto</span></li>
+                                    <li><span class="detail-label">Pelagem</span><span class="detail-value">Semi-longa</span></li>
+                                    <li><span class="detail-label">Local</span><span class="detail-value">São Paulo, SP</span></li>
+                                </ul>
+                                <p class="card-desc">Um gatinho cheio de personalidade que busca um lar com muito amor e paciência. Adaptável a ambientes internos e sociável com pessoas.</p>
+                                <div class="card-acoes">
+                                    <button class="btn btn-outline-inv" onclick="voltarCard(this)">← Voltar</button>
+                                    <a href="#" class="btn btn-primary">Quero adotar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-photo-wrap">
+                                <img th:src="@{/images/cremogema.jpg}" alt="Cremogema" class="card-foto">
+                                <div class="card-status-badge">
+                                    <span class="status-dot"></span> Disponível
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-traits">
+                                    <span class="trait trait-age">Adulta</span>
+                                    <span class="trait trait-female">Fêmea</span>
+                                    <span class="trait trait-coat">Curto</span>
+                                </div>
+                                <div class="card-info">
+                                    <h3 class="card-nome">Cremogema</h3>
+                                    <p class="card-local">📍 São Paulo, SP</p>
+                                </div>
+                                <p class="card-brief">Meiga e observadora, ideal para quem valoriza um gatinho sossegado.</p>
+                                <div class="card-acoes">
+                                    <button class="btn btn-outline" onclick="virarCard(this)">Saber mais</button>
+                                    <a href="#" class="btn btn-primary">Adotar</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-back-body">
+                                <div class="back-head">
+                                    <h3>Cremogema</h3>
+                                    <span class="trait-personality">Doce</span>
+                                </div>
+                                <ul class="detail-list">
+                                    <li><span class="detail-label">Sexo</span><span class="detail-value">Fêmea</span></li>
+                                    <li><span class="detail-label">Idade</span><span class="detail-value">Adulta</span></li>
+                                    <li><span class="detail-label">Pelagem</span><span class="detail-value">Curta</span></li>
+                                    <li><span class="detail-label">Local</span><span class="detail-value">São Paulo, SP</span></li>
+                                </ul>
+                                <p class="card-desc">Dócil e carinhosa, adora receber carinho e se adapta bem a apartamentos. Prefere um lar calmo e dedicado.</p>
+                                <div class="card-acoes">
+                                    <button class="btn btn-outline-inv" onclick="voltarCard(this)">← Voltar</button>
+                                    <a href="#" class="btn btn-primary">Quero adotar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-photo-wrap">
+                                <img th:src="@{/images/grumixama.jpeg}" alt="Grumixama" class="card-foto">
+                                <div class="card-status-badge">
+                                    <span class="status-dot"></span> Disponível
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-traits">
+                                    <span class="trait trait-age">Filhote</span>
+                                    <span class="trait trait-female">Fêmea</span>
+                                    <span class="trait trait-coat">Curto</span>
+                                </div>
+                                <div class="card-info">
+                                    <h3 class="card-nome">Grumixama</h3>
+                                    <p class="card-local">📍 São Paulo, SP</p>
+                                </div>
+                                <p class="card-brief">Cheia de energia e curiosidade, pronta para uma família ativa.</p>
+                                <div class="card-acoes">
+                                    <button class="btn btn-outline" onclick="virarCard(this)">Saber mais</button>
+                                    <a href="#" class="btn btn-primary">Adotar</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-back-body">
+                                <div class="back-head">
+                                    <h3>Grumixama</h3>
+                                    <span class="trait-personality">Brincalhona</span>
+                                </div>
+                                <ul class="detail-list">
+                                    <li><span class="detail-label">Sexo</span><span class="detail-value">Fêmea</span></li>
+                                    <li><span class="detail-label">Idade</span><span class="detail-value">Filhote</span></li>
+                                    <li><span class="detail-label">Pelagem</span><span class="detail-value">Curta</span></li>
+                                    <li><span class="detail-label">Local</span><span class="detail-value">São Paulo, SP</span></li>
+                                </ul>
+                                <p class="card-desc">Filhote curiosa e cheia de energia, pronta para crescer junto com sua família. Ideal para lares que adoram brincar.</p>
+                                <div class="card-acoes">
+                                    <button class="btn btn-outline-inv" onclick="voltarCard(this)">← Voltar</button>
+                                    <a href="#" class="btn btn-primary">Quero adotar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="sobre" id="sobre">
+            <div class="sobre-inner">
+                <div class="sobre-heading">
+                    <span class="section-label">Como funciona</span>
+                    <h2>Adoção simples e com suporte</h2>
+                    <p>Cada passo foi pensado para garantir um lar responsável e feliz para os gatinhos.</p>
+                </div>
+                <div class="steps">
+                    <div class="step">
+                        <span class="step-icon">🔍</span>
+                        <h3>Explore os perfis</h3>
+                        <p>Navegue pelas fotos e características de cada gatinho disponível para adoção.</p>
+                    </div>
+                    <div class="step">
+                        <span class="step-icon">💌</span>
+                        <h3>Entre em contato</h3>
+                        <p>Clique em "Adotar" e inicie o processo com nossos responsáveis dedicados.</p>
+                    </div>
+                    <div class="step">
+                        <span class="step-icon">🏡</span>
+                        <h3>Leve para casa</h3>
+                        <p>Após aprovação, seu novo companheiro vai para o lar com suporte completo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer" id="contato">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <div class="footer-logo-row">
+                        <div class="logo-crop logo-crop-inv">
+                            <img th:src="@{/images/logo-cat.png}" alt="">
+                        </div>
+                        <span class="brand-name brand-name-inv">Cat Center</span>
+                    </div>
+                    <p>Conectando gatinhos a lares seguros e cheios de afeto em São Paulo, SP.</p>
+                </div>
+                <div class="footer-cta">
+                    <p>Tem um gatinho para <strong>doar</strong>? Fale conosco.</p>
+                    <a href="#gatos" class="btn btn-primary">Ver todos os gatos</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-inner">
+                    © 2025 Cat Center · Feito com amor para os peludinhos de SP
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        function virarCard(btn) {
+            btn.closest('.card').querySelector('.card-inner').classList.add('virado');
+        }
+        function voltarCard(btn) {
+            btn.closest('.card').querySelector('.card-inner').classList.remove('virado');
+        }
+        document.querySelectorAll('.pill').forEach(function(pill) {
+            pill.addEventListener('click', function() {
+                document.querySelectorAll('.pill').forEach(function(p) { p.classList.remove('active'); });
+                pill.classList.add('active');
+            });
+        });
+    </script>
+
+</body>
+</html>

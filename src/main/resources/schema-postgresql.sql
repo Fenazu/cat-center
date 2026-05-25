@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS clientes (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(50),
+    cpf VARCHAR(11)
+);
