@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -67,7 +68,11 @@ public class AdotanteDAO {
     }
 
     public void deletarAdotante(int id) {
+        List<Integer> idGatos = jdbc.queryForList("SELECT id_gato FROM adocoes WHERE id_adotante = ?", Integer.class, id);
         jdbc.update("DELETE FROM adocoes WHERE id_adotante = ?", id);
+        for (Integer idGato : idGatos) {
+            jdbc.update("UPDATE gatos SET disponivel = 'SIM' WHERE id = ?", idGato);
+        }
         jdbc.update("DELETE FROM adotantes WHERE id = ?", id);
     }
 }

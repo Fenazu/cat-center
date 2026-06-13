@@ -27,12 +27,8 @@ public class AdocaoDAO {
 
     public void inserirAdocao(Adocao adocao) {
         String sql = "INSERT INTO adocoes (id_gato, id_adotante, status, data) VALUES (?, ?, ?, ?)";
-        Object[] obj = new Object[4];
-        obj[0] = adocao.getIdGato();
-        obj[1] = adocao.getIdAdotante();
-        obj[2] = adocao.getStatus().name();
-        obj[3] = Date.valueOf(adocao.getData());
-        jdbc.update(sql, obj);
+        jdbc.update(sql, adocao.getIdGato(), adocao.getIdAdotante(), StatusAdocao.PENDENTE.name(), Date.valueOf(adocao.getData()));
+        jdbc.update("UPDATE gatos SET disponivel = 'NAO' WHERE id = ?", adocao.getIdGato());
     }
 
     public Adocao obterAdocao(int id) {
