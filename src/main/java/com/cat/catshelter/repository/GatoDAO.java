@@ -91,7 +91,7 @@ public class GatoDAO {
     }
 
     public void deletarGato(int id) {
-        String sql = "DELETE FROM gatos WHERE id = ?";
-        jdbc.update(sql, id);
+        jdbc.update("DELETE FROM adocoes WHERE id_gato = ?", id);
+        jdbc.update("DELETE FROM gatos WHERE id = ?", id);
     }
 }

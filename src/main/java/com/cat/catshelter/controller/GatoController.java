@@ -6,7 +6,6 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +22,7 @@ import java.util.Map;
 public class GatoController {
 
     @Autowired
-    ApplicationContext context;
+    private GatoService gatoService;
 
     @Value("${app.upload-dir}")
     private String uploadDir;
@@ -61,15 +60,13 @@ public class GatoController {
 
     @GetMapping("/gato/{id}")
     public String detalheGato(Model model, @PathVariable int id) {
-        GatoService gs = context.getBean(GatoService.class);
-        model.addAttribute("gato", gs.obterGato(id));
+        model.addAttribute("gato", gatoService.obterGato(id));
         return "gatos/detalhe";
     }
 
     @GetMapping("/gatos")
     public String listarGatos(Model model) {
-        GatoService gs = context.getBean(GatoService.class);
-        model.addAttribute("gatos", gs.obterTodosGatos());
+        model.addAttribute("gatos", gatoService.obterTodosGatos());
         return "gatos/lista";
     }
 
@@ -85,17 +82,15 @@ public class GatoController {
     @PostMapping("/gato/novo")
     public String salvarGato(@ModelAttribute Gato gato,
                              @RequestParam("arquivo") MultipartFile arquivo) throws IOException {
-        GatoService gs = context.getBean(GatoService.class);
         gato.setDisponivel(Disponivel.SIM);
         gato.setFoto(salvarFoto(arquivo, null));
-        gs.inserirGato(gato);
-        return "redirect:/adotar";
+        gatoService.inserirGato(gato);
+        return "redirect:/gatos";
     }
 
     @GetMapping("/gato/{id}/editar")
     public String formEditarGato(Model model, @PathVariable int id) {
-        GatoService gs = context.getBean(GatoService.class);
-        model.addAttribute("gato", gs.obterGato(id));
+        model.addAttribute("gato", gatoService.obterGato(id));
         model.addAttribute("sexos", Sexo.values());
         model.addAttribute("faixasEtarias", FaixaEtaria.values());
         model.addAttribute("castrados", Castrado.values());
@@ -108,17 +103,15 @@ public class GatoController {
     public String atualizarGato(@ModelAttribute Gato gato,
                                 @RequestParam("arquivo") MultipartFile arquivo,
                                 @PathVariable int id) throws IOException {
-        GatoService gs = context.getBean(GatoService.class);
-        Gato atual = gs.obterGato(id);
+        Gato atual = gatoService.obterGato(id);
         gato.setFoto(salvarFoto(arquivo, atual.getFoto()));
-        gs.atualizarGato(id, gato);
-        return "redirect:/adotar";
+        gatoService.atualizarGato(id, gato);
+        return "redirect:/gatos";
     }
 
     @PostMapping("/gato/{id}/deletar")
     public String deletarGato(@PathVariable int id) {
-        GatoService gs = context.getBean(GatoService.class);
-        gs.deletarGato(id);
-        return "redirect:/adotar";
+        gatoService.deletarGato(id);
+        return "redirect:/gatos";
     }
 }

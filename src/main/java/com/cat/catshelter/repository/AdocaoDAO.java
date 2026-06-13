@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -68,10 +69,10 @@ public class AdocaoDAO {
     }
 
     public void deletarAdocao(int id) {
-        Integer idGato = jdbc.queryForObject("SELECT id_gato FROM adocoes WHERE id = ?", Integer.class, id);
+        List<Integer> ids = jdbc.queryForList("SELECT id_gato FROM adocoes WHERE id = ?", Integer.class, id);
         jdbc.update("DELETE FROM adocoes WHERE id = ?", id);
-        if (idGato != null) {
-            jdbc.update("UPDATE gatos SET disponivel = 'SIM' WHERE id = ?", idGato);
+        if (!ids.isEmpty()) {
+            jdbc.update("UPDATE gatos SET disponivel = 'SIM' WHERE id = ?", ids.get(0));
         }
     }
 }
