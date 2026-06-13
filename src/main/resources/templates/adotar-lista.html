@@ -196,8 +196,8 @@
                         <li><span class="dl">Cor</span><span class="dv" th:text="${#strings.capitalize(#strings.toLowerCase(gato.cor))}"></span></li>
                         <li><span class="dl">Pelagem</span><span class="dv" th:text="${#strings.capitalize(#strings.toLowerCase(gato.tipoPelagem))}"></span></li>
                         <li><span class="dl">Castrado</span><span class="dv" th:text="${gato.castrado.name() == 'SIM' ? 'Sim' : 'Não'}"></span></li>
+                        <li><span class="dl">Observações</span><span class="dv" th:text="${gato.comorbidades != null and !#strings.isEmpty(gato.comorbidades) and !#strings.equalsIgnoreCase(gato.comorbidades, 'nenhuma') ? gato.comorbidades : 'Nenhuma'}"></span></li>
                     </ul>
-                    <p class="back-desc" th:text="${gato.comorbidades != null and !#strings.isEmpty(gato.comorbidades) and !#strings.equalsIgnoreCase(gato.comorbidades, 'nenhuma')} ? 'Observações: ' + ${gato.comorbidades} : 'Saudável, sem comorbidades. Castrado e vacinado.'"></p>
                     <div class="back-btns">
                         <button class="btn btn-inv btn-sm" onclick="voltarCard(this)">← Voltar</button>
                         <a th:if="${gato.disponivel.name() == 'SIM'}" th:href="@{/adotar/{id}(id=${gato.id})}" class="btn btn-coral btn-sm">Quero adotar</a>

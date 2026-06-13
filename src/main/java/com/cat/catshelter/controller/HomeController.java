@@ -33,7 +33,7 @@ public class HomeController {
     @GetMapping("/adotar")
     public String listarAdotar(Model model) {
         GatoService gs = context.getBean(GatoService.class);
-        model.addAttribute("gatos", gs.obterTodosGatos());
+        model.addAttribute("gatos", gs.obterGatosDisponiveis());
         return "adotar-lista";
     }
 
