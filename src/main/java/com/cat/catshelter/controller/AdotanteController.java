@@ -49,7 +49,7 @@ public class AdotanteController {
         return "redirect:/adotantes";
     }
 
-    @GetMapping("/adotante/{id}/deletar")
+    @PostMapping("/adotante/{id}/deletar")
     public String deletarAdotante(@PathVariable int id) {
         AdotanteService as = context.getBean(AdotanteService.class);
         as.deletarAdotante(id);

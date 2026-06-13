@@ -75,9 +75,10 @@
                     </td>
                     <td class="td-actions">
                         <a th:href="@{/gato/{id}/editar(id=${gato.id})}" class="btn btn-primary btn-sm">Editar</a>
-                        <a th:href="@{/gato/{id}/deletar(id=${gato.id})}"
-                           class="btn btn-ghost btn-sm"
-                           onclick="return confirm('Tem certeza que deseja remover este gato?')">Remover</a>
+                        <form th:action="@{/gato/{id}/deletar(id=${gato.id})}" method="post"
+                              onsubmit="return confirm('Tem certeza que deseja remover este gato?')" style="display:inline">
+                            <button type="submit" class="btn btn-ghost btn-sm">Remover</button>
+                        </form>
                     </td>
                 </tr>
             </tbody>

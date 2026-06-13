@@ -57,7 +57,7 @@ public class AdocaoController {
         return "redirect:/adocoes";
     }
 
-    @GetMapping("/adocao/{id}/deletar")
+    @PostMapping("/adocao/{id}/deletar")
     public String deletarAdocao(@PathVariable int id) {
         AdocaoService as = context.getBean(AdocaoService.class);
         as.deletarAdocao(id);

@@ -108,7 +108,7 @@ public class GatoController {
         return "redirect:/adotar";
     }
 
-    @GetMapping("/gato/{id}/deletar")
+    @PostMapping("/gato/{id}/deletar")
     public String deletarGato(@PathVariable int id) {
         GatoService gs = context.getBean(GatoService.class);
         gs.deletarGato(id);

@@ -56,8 +56,10 @@
                     <td>
                         <div style="display:flex;gap:.5rem">
                             <a th:href="@{/adotante/{id}/editar(id=${adotante.id})}" class="btn btn-outline btn-sm">Editar</a>
-                            <a th:href="@{/adotante/{id}/deletar(id=${adotante.id})}" class="btn btn-ghost btn-sm"
-                               onclick="return confirm('Remover este adotante?')">Remover</a>
+                            <form th:action="@{/adotante/{id}/deletar(id=${adotante.id})}" method="post"
+                                  onsubmit="return confirm('Remover este adotante?')" style="display:inline">
+                                <button type="submit" class="btn btn-ghost btn-sm">Remover</button>
+                            </form>
                         </div>
                     </td>
                 </tr>
