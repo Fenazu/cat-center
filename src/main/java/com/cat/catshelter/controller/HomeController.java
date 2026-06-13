@@ -27,6 +27,7 @@ public class HomeController {
         GatoService gs = context.getBean(GatoService.class);
         List<com.cat.catshelter.model.Gato> disponiveis = gs.obterGatosDisponiveis();
         model.addAttribute("gatos", disponiveis.size() > 3 ? disponiveis.subList(0, 3) : disponiveis);
+        model.addAttribute("totalGatos", gs.obterTodosGatos().size());
         return "index";
     }
 
