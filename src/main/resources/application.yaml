@@ -23,3 +23,8 @@ spring:
 
 app:
   upload-dir: ${UPLOAD_DIR:${user.dir}/src/main/resources/static/images/gatos/}
+
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME:}
+  api-key: ${CLOUDINARY_API_KEY:}
+  api-secret: ${CLOUDINARY_API_SECRET:}

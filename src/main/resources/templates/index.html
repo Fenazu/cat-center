@@ -343,7 +343,7 @@
                             <span th:if="${gato.disponivel.name() == 'NAO'}"
                                   class="status status-indisponivel">Indisponível</span>
                             <img th:if="${gato.foto != null and !#strings.isEmpty(gato.foto)}"
-                                 th:src="@{/images/gatos/__${gato.foto}__}"
+                                 th:src="${#strings.startsWith(gato.foto, 'http') ? gato.foto : '/images/gatos/' + gato.foto}"
                                  th:alt="${gato.nome}">
                             <div th:if="${gato.foto == null or #strings.isEmpty(gato.foto)}"
                                  class="no-photo"></div>

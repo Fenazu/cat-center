@@ -16,10 +16,11 @@ CREATE TABLE IF NOT EXISTS gatos (
     comorbidades  VARCHAR(255),
     castrado      VARCHAR(5)   NOT NULL,           -- SIM, NAO
     disponivel    VARCHAR(5)   NOT NULL DEFAULT 'SIM',  -- SIM, NAO
-    foto          VARCHAR(100)
+    foto          VARCHAR(500)
 );
 
-ALTER TABLE gatos ADD COLUMN IF NOT EXISTS foto VARCHAR(100);
+ALTER TABLE gatos ADD COLUMN IF NOT EXISTS foto VARCHAR(500);
+ALTER TABLE gatos ALTER COLUMN foto TYPE VARCHAR(500);
 
 CREATE TABLE IF NOT EXISTS adocoes (
     id           SERIAL PRIMARY KEY,

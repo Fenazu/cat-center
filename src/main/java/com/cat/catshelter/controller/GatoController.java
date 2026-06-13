@@ -2,6 +2,8 @@ package com.cat.catshelter.controller;
 
 import com.cat.catshelter.model.*;
 import com.cat.catshelter.service.GatoService;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -15,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Map;
 
 @Controller
 public class GatoController {
@@ -25,8 +28,30 @@ public class GatoController {
     @Value("${app.upload-dir}")
     private String uploadDir;
 
+    @Value("${cloudinary.cloud-name:}")
+    private String cloudName;
+
+    @Value("${cloudinary.api-key:}")
+    private String apiKey;
+
+    @Value("${cloudinary.api-secret:}")
+    private String apiSecret;
+
     private String salvarFoto(MultipartFile arquivo, String fotoAtual) throws IOException {
         if (arquivo == null || arquivo.isEmpty()) return fotoAtual;
+
+        if (!cloudName.isEmpty()) {
+            Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", cloudName,
+                "api_key", apiKey,
+                "api_secret", apiSecret,
+                "secure", true
+            ));
+            Map result = cloudinary.uploader().upload(arquivo.getBytes(),
+                ObjectUtils.asMap("folder", "catshelter"));
+            return result.get("secure_url").toString();
+        }
+
         Path dir = Paths.get(uploadDir);
         Files.createDirectories(dir);
         String nomeArquivo = System.currentTimeMillis() + "_" + arquivo.getOriginalFilename();

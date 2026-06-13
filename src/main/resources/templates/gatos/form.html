@@ -103,7 +103,8 @@
                     <div class="upload-area" id="upload-area" onclick="document.getElementById('foto-input').click()">
                         <img id="preview-img"
                              th:if="${gato.foto != null and !#strings.isEmpty(gato.foto)}"
-                             th:src="@{/images/gatos/__${gato.foto}__}" alt="">
+                             th:src="${#strings.startsWith(gato.foto, 'http') ? gato.foto : '/images/gatos/' + gato.foto}"
+                             alt="">
                         <div class="upload-placeholder" id="upload-placeholder">
                             <svg width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
