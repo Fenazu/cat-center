@@ -14,6 +14,9 @@
         <img th:src="@{/images/logo.jpeg}" alt="Cat Center">
     </a>
     <div class="navbar-links">
+        <a th:href="@{/adotar}">Adotar</a>
+        <a th:href="@{/#como}">Como funciona</a>
+        <a th:href="@{/#contato}">Contato</a>
         <a th:href="@{/gatos}">Gatos</a>
         <a th:href="@{/adotantes}">Adotantes</a>
         <a th:href="@{/adocoes}" class="active">Adoções</a>
@@ -69,6 +72,18 @@
     </div>
 </div>
 
-<footer>Cat Center &mdash; Sistema de Gestão de Adoções</footer>
+<footer class="site-footer">
+    <div class="foot-inner">
+        <div>
+            <img th:src="@{/images/logo.jpeg}" alt="Cat Center">
+            <p>© 2026 Cat Center · Abrigo de gatos · São Paulo, SP</p>
+        </div>
+        <div class="foot-links">
+            <a href="#">Instagram</a>
+            <a href="#">WhatsApp</a>
+            <a href="mailto:contato@catcenter.com.br">E-mail</a>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
