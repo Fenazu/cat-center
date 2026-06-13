@@ -49,8 +49,8 @@
             </thead>
             <tbody>
                 <tr th:each="adocao : ${adocoes}">
-                    <td style="font-weight:800" th:text="'#' + ${adocao.idGato}"></td>
-                    <td th:text="'#' + ${adocao.idAdotante}"></td>
+                    <td style="font-weight:800" th:text="${adocao.nomeGato}"></td>
+                    <td th:text="${adocao.nomeAdotante}"></td>
                     <td th:text="${adocao.data}"></td>
                     <td>
                         <span th:text="${adocao.status}"

@@ -11,6 +11,8 @@ public class Adocao {
     private int idAdotante;
     private StatusAdocao status;
     private LocalDate data;
+    private String nomeGato;
+    private String nomeAdotante;
 
     // Inicio do form
     public Adocao() {
@@ -34,12 +36,16 @@ public class Adocao {
     }
 
     public static Adocao converterRegistro(Map<String, Object> registros) {
-        int id = (int) registros.get("id");
-        int idGato = (int) registros.get("id_gato");
-        int idAdotante = (int) registros.get("id_adotante");
-        StatusAdocao status = StatusAdocao.valueOf((String) registros.get("status"));
-        LocalDate data = ((Date) registros.get("data")).toLocalDate();
-        return new Adocao(id, idGato, idAdotante, status, data);
+        Adocao a = new Adocao(
+            (int) registros.get("id"),
+            (int) registros.get("id_gato"),
+            (int) registros.get("id_adotante"),
+            StatusAdocao.valueOf((String) registros.get("status")),
+            ((Date) registros.get("data")).toLocalDate()
+        );
+        if (registros.containsKey("nome_gato"))    a.setNomeGato((String) registros.get("nome_gato"));
+        if (registros.containsKey("nome_adotante")) a.setNomeAdotante((String) registros.get("nome_adotante"));
+        return a;
     }
 
     public int getId() { return id; }
@@ -53,4 +59,8 @@ public class Adocao {
     public void setIdAdotante(int idAdotante) { this.idAdotante = idAdotante; }
     public void setStatus(StatusAdocao status) { this.status = status; }
     public void setData(LocalDate data) { this.data = data; }
+    public void setNomeGato(String nomeGato) { this.nomeGato = nomeGato; }
+    public void setNomeAdotante(String nomeAdotante) { this.nomeAdotante = nomeAdotante; }
+    public String getNomeGato() { return nomeGato; }
+    public String getNomeAdotante() { return nomeAdotante; }
 }

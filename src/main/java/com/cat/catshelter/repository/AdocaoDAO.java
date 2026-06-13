@@ -41,7 +41,11 @@ public class AdocaoDAO {
     }
 
     public ArrayList<Adocao> obterTodasAdocoes() {
-        String sql = "SELECT * FROM adocoes ORDER BY data DESC";
+        String sql = "SELECT a.*, g.nome AS nome_gato, ad.nome AS nome_adotante " +
+                     "FROM adocoes a " +
+                     "JOIN gatos g ON g.id = a.id_gato " +
+                     "JOIN adotantes ad ON ad.id = a.id_adotante " +
+                     "ORDER BY a.data DESC";
         ArrayList<Map<String, Object>> listaRegistros = (ArrayList<Map<String, Object>>) jdbc.queryForList(sql);
         ArrayList<Adocao> aux = new ArrayList();
 
