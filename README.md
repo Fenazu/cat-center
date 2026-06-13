@@ -45,19 +45,3 @@ A aplicação utiliza **3 tabelas** no PostgreSQL, hospedado no próprio Render:
 - **Cloudinary** — armazenamento das fotos dos gatos
 - **Render** — deploy e hospedagem da aplicação
 
-## Como rodar localmente
-
-1. Tenha o PostgreSQL rodando com um banco chamado `catshelter`
-2. Configure as variáveis de ambiente ou ajuste o `application.yaml`:
-   ```
-   SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/catshelter
-   SPRING_DATASOURCE_USERNAME=seu_usuario
-   SPRING_DATASOURCE_PASSWORD=sua_senha
-   ```
-3. Execute:
-   ```bash
-   ./mvnw spring-boot:run
-   ```
-4. Acesse `http://localhost:8080`
-
-O schema das tabelas é criado automaticamente na primeira execução via `schema-postgresql.sql`.
