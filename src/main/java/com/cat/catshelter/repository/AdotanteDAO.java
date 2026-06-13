@@ -67,7 +67,7 @@ public class AdotanteDAO {
     }
 
     public void deletarAdotante(int id) {
-        String sql = "DELETE FROM adotantes WHERE id = ?";
-        jdbc.update(sql, id);
+        jdbc.update("DELETE FROM adocoes WHERE id_adotante = ?", id);
+        jdbc.update("DELETE FROM adotantes WHERE id = ?", id);
     }
 }
