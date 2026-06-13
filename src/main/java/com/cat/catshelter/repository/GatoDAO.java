@@ -47,10 +47,10 @@ public class GatoDAO {
     public ArrayList<Gato> obterTodosGatos() {
         String sql = "SELECT * FROM gatos ORDER BY nome";
         ArrayList<Map<String, Object>> listaRegistros = (ArrayList<Map<String, Object>>) jdbc.queryForList(sql);
-        ArrayList<Gato> aux = new ArrayList();
+        ArrayList<Gato> aux = new ArrayList<>();
 
         for (Map<String, Object> registro : listaRegistros) {
-            aux.add(Gato.converterRegistro((Map) registro));
+            aux.add(Gato.converterRegistro(registro));
         }
         return aux;
     }
@@ -58,10 +58,10 @@ public class GatoDAO {
     public ArrayList<Gato> obterGatosDisponiveis() {
         String sql = "SELECT * FROM gatos WHERE disponivel = 'SIM' ORDER BY nome";
         ArrayList<Map<String, Object>> listaRegistros = (ArrayList<Map<String, Object>>) jdbc.queryForList(sql);
-        ArrayList<Gato> aux = new ArrayList();
+        ArrayList<Gato> aux = new ArrayList<>();
 
         for (Map<String, Object> registro : listaRegistros) {
-            aux.add(Gato.converterRegistro((Map) registro));
+            aux.add(Gato.converterRegistro(registro));
         }
         return aux;
     }

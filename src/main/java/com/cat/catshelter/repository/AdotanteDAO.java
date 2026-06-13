@@ -48,10 +48,10 @@ public class AdotanteDAO {
     public ArrayList<Adotante> obterTodosAdotantes() {
         String sql = "SELECT * FROM adotantes ORDER BY nome";
         ArrayList<Map<String, Object>> listaRegistros = (ArrayList<Map<String, Object>>) jdbc.queryForList(sql);
-        ArrayList<Adotante> aux = new ArrayList();
+        ArrayList<Adotante> aux = new ArrayList<>();
 
         for (Map<String, Object> registro : listaRegistros) {
-            aux.add(Adotante.converterRegistro((Map) registro));
+            aux.add(Adotante.converterRegistro(registro));
         }
         return aux;
     }

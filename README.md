@@ -6,8 +6,6 @@ Sistema web para gerenciamento de um abrigo de gatos, desenvolvido com Spring Bo
 
 O Cat Center é uma aplicação voltada para a **administração de um abrigo felino**. Esta versão funciona como um painel administrativo completo, onde a equipe do abrigo pode gerenciar gatos, adotantes e adoções — cadastrando, editando, removendo e acompanhando o status de cada processo.
 
-A aplicação está disponível em: **https://cat-center.onrender.com/**
-
 ## Banco de dados
 
 A aplicação utiliza **3 tabelas** no PostgreSQL, hospedado no próprio Render:

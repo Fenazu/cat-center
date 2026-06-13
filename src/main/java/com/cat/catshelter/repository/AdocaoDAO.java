@@ -52,10 +52,10 @@ public class AdocaoDAO {
                      "JOIN adotantes ad ON ad.id = a.id_adotante " +
                      "ORDER BY a.data DESC";
         ArrayList<Map<String, Object>> listaRegistros = (ArrayList<Map<String, Object>>) jdbc.queryForList(sql);
-        ArrayList<Adocao> aux = new ArrayList();
+        ArrayList<Adocao> aux = new ArrayList<>();
 
         for (Map<String, Object> registro : listaRegistros) {
-            aux.add(Adocao.converterRegistro((Map) registro));
+            aux.add(Adocao.converterRegistro(registro));
         }
         return aux;
     }
