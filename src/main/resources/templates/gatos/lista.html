@@ -56,6 +56,7 @@
         <table>
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Nome</th>
                     <th>Sexo</th>
                     <th>Faixa etária</th>
@@ -67,6 +68,7 @@
             </thead>
             <tbody>
                 <tr th:each="gato : ${gatos}">
+                    <td style="color:var(--text-muted);font-size:.8rem;font-weight:700" th:text="'#' + ${gato.id}"></td>
                     <td class="td-name"><a th:href="@{/gato/{id}(id=${gato.id})}" th:text="${gato.nome}" style="color:inherit;text-decoration:none;border-bottom:1px dotted var(--coral)"></a></td>
                     <td th:text="${gato.sexo.name() == 'FEMEA' ? 'Fêmea' : 'Macho'}"></td>
                     <td th:text="${#strings.capitalize(#strings.toLowerCase(gato.faixaEtaria.name()))}"></td>
