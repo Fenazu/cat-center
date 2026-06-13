@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Adoção — Cat Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar">
+    <a th:href="@{/}" class="navbar-brand">
+        <img th:src="@{/images/logo.jpeg}" alt="Cat Center">
+    </a>
+    <div class="navbar-links">
+        <a th:href="@{/gatos}">Gatos</a>
+        <a th:href="@{/adotantes}">Adotantes</a>
+        <a th:href="@{/adocoes}" class="active">Adoções</a>
+    </div>
+</nav>
+
+<div class="page-top">
+    <div>
+        <div class="breadcrumb">Painel &rsaquo; <a th:href="@{/adocoes}" style="color:var(--orange);text-decoration:none;font-weight:700">Adoções</a> &rsaquo; Nova</div>
+        <h1>Nova adoção</h1>
+    </div>
+</div>
+
+<div class="container">
+    <div class="form-card">
+        <form th:action="@{/adocao/nova}" th:object="${adocao}" method="post">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>Gato</label>
+                    <select th:field="*{idGato}">
+                        <option value="">Selecione um gato disponível</option>
+                        <option th:each="g : ${gatos}" th:value="${g.id}" th:text="${g.nome}"></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Adotante</label>
+                    <select th:field="*{idAdotante}">
+                        <option value="">Selecione um adotante</option>
+                        <option th:each="a : ${adotantes}" th:value="${a.id}" th:text="${a.nome}"></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Data</label>
+                    <input type="date" th:field="*{data}">
+                </div>
+
+            </div>
+
+            <div class="form-note">
+                A adoção será registrada automaticamente com status <strong>PENDENTE</strong>. O gato ficará indisponível para outras adoções.
+            </div>
+
+            <div class="form-footer">
+                <a th:href="@{/adocoes}" class="btn btn-ghost">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Registrar adoção</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<footer>Cat Center &mdash; Sistema de Gestão de Adoções</footer>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adotar — Cat Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --coral:      #FB8A60;
+            --coral-dark: #ef7146;
+            --blue-deep:  #7da0b8;
+            --cream:      #F4F3EF;
+            --ink:        #3a3a3a;
+            --muted:      #9a9a96;
+            --shadow:     0 14px 40px rgba(58,58,58,.08);
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Nunito', sans-serif; background: var(--cream); color: var(--ink); -webkit-font-smoothing: antialiased; }
+        h1, h2, h3 { font-family: 'Fredoka', sans-serif; }
+        .wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+        a { text-decoration: none; }
+
+        /* NAV */
+        header { position: sticky; top: 0; z-index: 50; background: rgba(244,243,239,.88); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(125,160,184,.18); }
+        .nav { display: flex; align-items: center; justify-content: space-between; height: 78px; }
+        .brand img { height: 46px; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: var(--ink); font-weight: 700; font-size: .98rem; transition: color .2s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--coral-dark); }
+        .btn { font-family: 'Nunito', sans-serif; border: none; cursor: pointer; font-weight: 800; padding: 13px 26px; border-radius: 999px; font-size: .95rem; transition: transform .15s, background .2s; display: inline-flex; align-items: center; justify-content: center; }
+        .btn-coral { background: var(--coral); color: #fff; box-shadow: 0 8px 20px rgba(251,138,96,.35); }
+        .btn-coral:hover { background: var(--coral-dark); transform: translateY(-2px); }
+        .btn-ghost { background: transparent; color: var(--ink); border: 2px solid rgba(125,160,184,.4); }
+        .btn-ghost:hover { border-color: var(--coral); color: var(--coral-dark); }
+        .btn-sm { padding: 10px 20px; font-size: .88rem; }
+        .btn-inv { background: rgba(255,255,255,.12); color: rgba(244,243,239,.9); border: 1.5px solid rgba(255,255,255,.2); border-radius: 999px; }
+        .btn-inv:hover { background: rgba(255,255,255,.2); }
+        .btn-off { background: #ccc !important; box-shadow: none !important; color: #888 !important; cursor: not-allowed; pointer-events: none; }
+
+        /* PAGE TOP */
+        .page-top { max-width: 1140px; margin: 0 auto; padding: 48px 24px 36px; }
+        .eyebrow { display: block; color: var(--blue-deep); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; font-size: .8rem; margin-bottom: 8px; }
+        .page-top h1 { font-size: clamp(2rem,4vw,2.8rem); font-weight: 700; }
+        .page-top p { color: #6b6b67; margin-top: 8px; }
+
+        /* GRID */
+        .cards-grid { max-width: 1140px; margin: 0 auto; padding: 0 24px 80px; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 28px; }
+
+        /* ════════ FLIP CARD ════════ */
+        .card { height: 580px; perspective: 1200px; }
+
+        .card-inner {
+            width: 100%; height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+            will-change: transform;
+        }
+
+        /* classe adicionada pelo JS diretamente no .card */
+        .card.virado .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 22px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-back { transform: rotateY(180deg); }
+
+        /* FRONT */
+        .card-front { background: #fff; border: 4px solid #fcd9c8; box-shadow: var(--shadow); overflow: hidden; }
+
+        .card-photo { position: relative; padding: 14px 14px 0; flex-shrink: 0; }
+        .card-photo img { width: 100%; height: 200px; object-fit: cover; border-radius: 14px; display: block; }
+        .card-photo .no-photo { width: 100%; height: 200px; border-radius: 14px; background: linear-gradient(160deg,#FDE8DE,#F5C5A8); }
+
+        .status-pill { position: absolute; top: 26px; left: 26px; background: rgba(255,255,255,.95); border-radius: 999px; padding: 5px 12px; font-weight: 800; font-size: .78rem; display: flex; align-items: center; gap: 6px; box-shadow: 0 3px 10px rgba(0,0,0,.1); }
+        .sdot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .sdot-g { background: #2e9e5b; }
+        .sdot-r { background: #c0392b; }
+        .cg { color: #2e9e5b; }
+        .cr { color: #c0392b; }
+
+        .card-body { padding: 14px 20px 18px; display: flex; flex-direction: column; flex: 1; }
+        .card-body h3 { font-size: 1.45rem; font-weight: 700; line-height: 1.1; }
+        .card-loc { color: var(--muted); font-weight: 700; font-size: .84rem; margin-top: 3px; display: flex; align-items: center; gap: 4px; }
+        .card-loc svg { width: 11px; height: 11px; fill: var(--coral); flex-shrink: 0; }
+        .specs { list-style: none; margin: 10px 0 0; border-top: 1px solid #eee; flex: 1; }
+        .specs li { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #f0efeb; font-size: .87rem; }
+        .specs .k { color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .5px; font-size: .73rem; }
+        .specs .v { font-weight: 800; }
+        .card-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+        .card-btns .btn { padding: 11px; font-size: .87rem; }
+
+        /* BACK */
+        .card-back { background: linear-gradient(150deg, #3D3030, #2E2424); overflow: hidden; }
+        .back-body { padding: 1.375rem; display: flex; flex-direction: column; gap: .8rem; height: 100%; }
+        .back-head { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
+        .back-head h3 { font-size: 1.5rem; color: #F4F3EF; }
+        .back-tag { font-size: .72rem; font-weight: 800; padding: 5px 12px; border-radius: 999px; background: rgba(255,255,255,.12); color: rgba(244,243,239,.8); border: 1px solid rgba(255,255,255,.15); white-space: nowrap; flex-shrink: 0; }
+        .dlist { border-top: 1px solid rgba(255,255,255,.1); border-bottom: 1px solid rgba(255,255,255,.1); padding: .5rem 0; display: flex; flex-direction: column; gap: .5rem; flex: 1; }
+        .dlist li { display: flex; justify-content: space-between; font-size: .85rem; }
+        .dl { font-size: .65rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(244,243,239,.38); }
+        .dv { font-weight: 700; color: rgba(244,243,239,.92); }
+        .back-desc { font-size: .83rem; color: rgba(244,243,239,.5); line-height: 1.65; }
+        .back-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .back-btns .btn { padding: 11px; font-size: .87rem; }
+
+        /* FOOTER */
+        footer { padding: 40px 0 28px; border-top: 1px solid rgba(125,160,184,.18); }
+        .foot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .foot img { height: 40px; }
+        .foot p { color: var(--muted); font-size: .9rem; margin-top: 6px; }
+        .foot-links { display: flex; gap: 22px; }
+        .foot-links a { color: var(--ink); font-weight: 700; font-size: .9rem; }
+        .foot-links a:hover { color: var(--coral-dark); }
+
+        @media (max-width: 900px) { .nav-links { display: none; } .cards-grid { grid-template-columns: 1fr; max-width: 380px; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="wrap nav">
+        <a class="brand" th:href="@{/}"><img th:src="@{/images/logo.jpeg}" alt="Cat Center"></a>
+        <nav class="nav-links">
+            <a th:href="@{/adotar}" class="active">Adotar</a>
+            <a th:href="@{/#como}">Como funciona</a>
+            <a th:href="@{/#contato}">Contato</a>
+        </nav>
+        <a th:href="@{/gato/novo}" class="btn btn-coral">+ Cadastrar gato</a>
+    </div>
+</header>
+
+<div class="page-top">
+    <span class="eyebrow">Disponíveis para adoção</span>
+    <h1>Nossos gatinhos</h1>
+    <p>Conheça cada um e encontre o companheiro perfeito para a sua família.</p>
+</div>
+
+<div class="cards-grid">
+    <div th:each="gato : ${gatos}" class="card">
+        <div class="card-inner">
+
+            <div class="card-front">
+                <div class="card-photo">
+                    <div class="status-pill">
+                        <span th:if="${gato.disponivel.name() == 'SIM'}" class="sdot sdot-g"></span>
+                        <span th:if="${gato.disponivel.name() == 'NAO'}" class="sdot sdot-r"></span>
+                        <span th:if="${gato.disponivel.name() == 'SIM'}" class="cg">Disponível</span>
+                        <span th:if="${gato.disponivel.name() == 'NAO'}" class="cr">Indisponível</span>
+                    </div>
+                    <img th:if="${gato.foto != null and !#strings.isEmpty(gato.foto)}"
+                         th:src="@{/images/gatos/__${gato.foto}__}" th:alt="${gato.nome}">
+                    <div th:if="${gato.foto == null or #strings.isEmpty(gato.foto)}" class="no-photo"></div>
+                </div>
+                <div class="card-body">
+                    <h3 th:text="${gato.nome}"></h3>
+                    <div class="card-loc">
+                        <svg viewBox="0 0 384 512"><path d="M192 0C86 0 0 86 0 192c0 87 124 250 171 309a26 26 0 0040 0c47-59 173-222 173-309C384 86 298 0 192 0zm0 272a80 80 0 110-160 80 80 0 010 160z"/></svg>
+                        São Paulo, SP
+                    </div>
+                    <ul class="specs">
+                        <li><span class="k">Sexo</span><span class="v" th:text="${gato.sexo.name() == 'FEMEA' ? 'Fêmea' : 'Macho'}"></span></li>
+                        <li><span class="k">Faixa etária</span><span class="v" th:text="${#strings.capitalize(#strings.toLowerCase(gato.faixaEtaria.name()))}"></span></li>
+                        <li><span class="k">Pelagem</span><span class="v" th:text="${#strings.capitalize(#strings.toLowerCase(gato.tipoPelagem))}"></span></li>
+                    </ul>
+                    <div class="card-btns">
+                        <button class="btn btn-ghost btn-sm" onclick="virarCard(this)">Saber mais</button>
+                        <a th:if="${gato.disponivel.name() == 'SIM'}" th:href="@{/adotar/{id}(id=${gato.id})}" class="btn btn-coral btn-sm">Adotar</a>
+                        <span th:if="${gato.disponivel.name() == 'NAO'}" class="btn btn-coral btn-sm btn-off">Indisponível</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-back">
+                <div class="back-body">
+                    <div class="back-head">
+                        <h3 th:text="${gato.nome}"></h3>
+                        <span class="back-tag" th:text="${gato.disponivel.name() == 'SIM' ? 'Disponível' : 'Indisponível'}"></span>
+                    </div>
+                    <ul class="dlist">
+                        <li><span class="dl">Sexo</span><span class="dv" th:text="${gato.sexo.name() == 'FEMEA' ? 'Fêmea' : 'Macho'}"></span></li>
+                        <li><span class="dl">Faixa Etária</span><span class="dv" th:text="${#strings.capitalize(#strings.toLowerCase(gato.faixaEtaria.name()))}"></span></li>
+                        <li><span class="dl">Cor</span><span class="dv" th:text="${#strings.capitalize(#strings.toLowerCase(gato.cor))}"></span></li>
+                        <li><span class="dl">Pelagem</span><span class="dv" th:text="${#strings.capitalize(#strings.toLowerCase(gato.tipoPelagem))}"></span></li>
+                        <li><span class="dl">Castrado</span><span class="dv" th:text="${gato.castrado.name() == 'SIM' ? 'Sim' : 'Não'}"></span></li>
+                    </ul>
+                    <p class="back-desc" th:text="${gato.comorbidades != null and !#strings.isEmpty(gato.comorbidades) and !#strings.equalsIgnoreCase(gato.comorbidades, 'nenhuma')} ? 'Observações: ' + ${gato.comorbidades} : 'Saudável, sem comorbidades. Castrado e vacinado.'"></p>
+                    <div class="back-btns">
+                        <button class="btn btn-inv btn-sm" onclick="voltarCard(this)">← Voltar</button>
+                        <a th:if="${gato.disponivel.name() == 'SIM'}" th:href="@{/adotar/{id}(id=${gato.id})}" class="btn btn-coral btn-sm">Quero adotar</a>
+                        <span th:if="${gato.disponivel.name() == 'NAO'}" class="btn btn-coral btn-sm btn-off">Indisponível</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<footer id="contato">
+    <div class="wrap foot">
+        <div>
+            <img th:src="@{/images/logo.jpeg}" alt="Cat Center">
+            <p>© 2026 Cat Center · Abrigo de gatos · São Paulo, SP</p>
+        </div>
+        <div class="foot-links">
+            <a href="#">Instagram</a>
+            <a href="#">WhatsApp</a>
+            <a href="mailto:contato@catcenter.com.br">E-mail</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function virarCard(btn) {
+        btn.closest('.card').classList.add('virado');
+    }
+    function voltarCard(btn) {
+        btn.closest('.card').classList.remove('virado');
+    }
+</script>
+</body>
+</html>

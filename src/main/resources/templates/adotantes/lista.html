@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adotantes — Cat Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar">
+    <a th:href="@{/}" class="navbar-brand">
+        <img th:src="@{/images/logo.jpeg}" alt="Cat Center">
+    </a>
+    <div class="navbar-links">
+        <a th:href="@{/gatos}">Gatos</a>
+        <a th:href="@{/adotantes}" class="active">Adotantes</a>
+        <a th:href="@{/adocoes}">Adoções</a>
+        <a th:href="@{/adotante/novo}" class="navbar-cta">+ Cadastrar</a>
+    </div>
+</nav>
+
+<div class="page-top">
+    <div>
+        <div class="breadcrumb">Painel &rsaquo; Adotantes</div>
+        <h1>Adotantes</h1>
+    </div>
+</div>
+
+<div class="container">
+
+    <div th:if="${#lists.isEmpty(adotantes)}" class="empty">
+        <div class="empty__title">Nenhum adotante cadastrado</div>
+        <div class="empty__sub">Cadastre o primeiro adotante do Cat Center</div>
+        <a th:href="@{/adotante/novo}" class="btn btn-primary" style="margin-top:1.25rem">Cadastrar adotante</a>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(adotantes)}" class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>CEP</th>
+                    <th>Telefone</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="adotante : ${adotantes}">
+                    <td style="font-weight:800" th:text="${adotante.nome}"></td>
+                    <td th:text="${adotante.cpf}"></td>
+                    <td th:text="${adotante.cep}"></td>
+                    <td th:text="${adotante.telefone}"></td>
+                    <td>
+                        <div style="display:flex;gap:.5rem">
+                            <a th:href="@{/adotante/{id}/editar(id=${adotante.id})}" class="btn btn-outline btn-sm">Editar</a>
+                            <a th:href="@{/adotante/{id}/deletar(id=${adotante.id})}" class="btn btn-ghost btn-sm"
+                               onclick="return confirm('Remover este adotante?')">Remover</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<footer>Cat Center &mdash; Sistema de Gestão de Adoções</footer>
+</body>
+</html>

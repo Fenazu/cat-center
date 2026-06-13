@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adoções — Cat Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar">
+    <a th:href="@{/}" class="navbar-brand">
+        <img th:src="@{/images/logo.jpeg}" alt="Cat Center">
+    </a>
+    <div class="navbar-links">
+        <a th:href="@{/gatos}">Gatos</a>
+        <a th:href="@{/adotantes}">Adotantes</a>
+        <a th:href="@{/adocoes}" class="active">Adoções</a>
+        <a th:href="@{/adocao/nova}" class="navbar-cta">+ Nova adoção</a>
+    </div>
+</nav>
+
+<div class="page-top">
+    <div>
+        <div class="breadcrumb">Painel &rsaquo; Adoções</div>
+        <h1>Adoções</h1>
+    </div>
+</div>
+
+<div class="container">
+
+    <div th:if="${#lists.isEmpty(adocoes)}" class="empty">
+        <div class="empty__title">Nenhuma adoção registrada</div>
+        <div class="empty__sub">Registre a primeira adoção do Cat Center</div>
+        <a th:href="@{/adocao/nova}" class="btn btn-primary" style="margin-top:1.25rem">Nova adoção</a>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(adocoes)}" class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Gato</th>
+                    <th>Adotante</th>
+                    <th>Data</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="adocao : ${adocoes}">
+                    <td style="font-weight:800" th:text="'#' + ${adocao.idGato}"></td>
+                    <td th:text="'#' + ${adocao.idAdotante}"></td>
+                    <td th:text="${adocao.data}"></td>
+                    <td>
+                        <span th:text="${adocao.status}"
+                              th:classappend="${adocao.status.name() == 'APROVADA'} ? 'badge badge-green' :
+                                             (${adocao.status.name() == 'CANCELADA'} ? 'badge badge-red' : 'badge badge-yellow')">
+                        </span>
+                    </td>
+                    <td>
+                        <div style="display:flex;gap:.5rem">
+                            <a th:href="@{/adocao/{id}/status(id=${adocao.id})}" class="btn btn-outline btn-sm">Alterar status</a>
+                            <a th:href="@{/adocao/{id}/deletar(id=${adocao.id})}" class="btn btn-ghost btn-sm"
+                               onclick="return confirm('Remover esta adoção?')">Remover</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<footer>Cat Center &mdash; Sistema de Gestão de Adoções</footer>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adotante — Cat Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar">
+    <a th:href="@{/}" class="navbar-brand">
+        <img th:src="@{/images/logo.jpeg}" alt="Cat Center">
+    </a>
+    <div class="navbar-links">
+        <a th:href="@{/gatos}">Gatos</a>
+        <a th:href="@{/adotantes}" class="active">Adotantes</a>
+        <a th:href="@{/adocoes}">Adoções</a>
+    </div>
+</nav>
+
+<div class="page-top">
+    <div>
+        <div class="breadcrumb">Painel &rsaquo; <a th:href="@{/adotantes}" style="color:var(--orange);text-decoration:none;font-weight:700">Adotantes</a> &rsaquo; <span th:text="${id != null} ? 'Editar' : 'Novo'"></span></div>
+        <h1 th:text="${id != null} ? 'Editar adotante' : 'Cadastrar adotante'"></h1>
+    </div>
+</div>
+
+<div class="container">
+    <div class="form-card">
+        <form th:action="${id != null} ? @{/adotante/{id}/editar(id=${id})} : @{/adotante/novo}"
+              th:object="${adotante}" method="post">
+
+            <div class="form-grid">
+
+                <div class="form-group full">
+                    <label>Nome completo</label>
+                    <input type="text" th:field="*{nome}" placeholder="Nome completo do adotante">
+                </div>
+
+                <div class="form-group">
+                    <label>CPF</label>
+                    <input type="text" th:field="*{cpf}" placeholder="000.000.000-00">
+                </div>
+
+                <div class="form-group">
+                    <label>Telefone</label>
+                    <input type="text" th:field="*{telefone}" placeholder="(00) 00000-0000">
+                </div>
+
+                <div class="form-group">
+                    <label>CEP</label>
+                    <input type="text" th:field="*{cep}" placeholder="00000-000">
+                </div>
+
+            </div>
+
+            <div class="form-footer">
+                <a th:href="@{/adotantes}" class="btn btn-ghost">Cancelar</a>
+                <button type="submit" class="btn btn-primary"
+                        th:text="${id != null} ? 'Salvar alterações' : 'Cadastrar adotante'"></button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<footer>Cat Center &mdash; Sistema de Gestão de Adoções</footer>
+</body>
+</html>

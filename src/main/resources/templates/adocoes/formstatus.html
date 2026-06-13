@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alterar Status — Cat Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar">
+    <a th:href="@{/}" class="navbar-brand">
+        <img th:src="@{/images/logo.jpeg}" alt="Cat Center">
+    </a>
+    <div class="navbar-links">
+        <a th:href="@{/gatos}">Gatos</a>
+        <a th:href="@{/adotantes}">Adotantes</a>
+        <a th:href="@{/adocoes}" class="active">Adoções</a>
+    </div>
+</nav>
+
+<div class="page-top">
+    <div>
+        <div class="breadcrumb">Painel &rsaquo; <a th:href="@{/adocoes}" style="color:var(--orange);text-decoration:none;font-weight:700">Adoções</a> &rsaquo; Alterar status</div>
+        <h1>Alterar status da adoção</h1>
+    </div>
+</div>
+
+<div class="container">
+    <div class="form-card">
+
+        <div class="info-box">
+            <div class="label">Adoção #<span th:text="${adocao.id}"></span></div>
+            <div class="value">
+                Gato #<span th:text="${adocao.idGato}"></span>
+                &nbsp;&mdash;&nbsp;
+                Adotante #<span th:text="${adocao.idAdotante}"></span>
+                &nbsp;&mdash;&nbsp;
+                <span th:text="${adocao.data}"></span>
+            </div>
+            <div style="margin-top:.75rem">
+                <span style="font-size:.8rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em">Status atual&nbsp;&nbsp;</span>
+                <span th:text="${adocao.status}"
+                      th:classappend="${adocao.status.name() == 'APROVADA'} ? 'badge badge-green' :
+                                     (${adocao.status.name() == 'CANCELADA'} ? 'badge badge-red' : 'badge badge-yellow')">
+                </span>
+            </div>
+        </div>
+
+        <form th:action="@{/adocao/{id}/status(id=${id})}" method="post">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Novo status</label>
+                    <select name="status">
+                        <option th:each="s : ${statusList}" th:value="${s}" th:text="${s}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-footer">
+                <a th:href="@{/adocoes}" class="btn btn-ghost">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Salvar status</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<footer>Cat Center &mdash; Sistema de Gestão de Adoções</footer>
+</body>
+</html>

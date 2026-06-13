@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Gato — Cat Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --coral:#FB8A60; --coral-dark:#ef7146; --blue-deep:#7da0b8; --cream:#F4F3EF; --ink:#3a3a3a; --muted:#9a9a96; --shadow:0 14px 40px rgba(58,58,58,.08); }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Nunito',sans-serif; background:var(--cream); color:var(--ink); -webkit-font-smoothing:antialiased; }
+        h1,h2,h3 { font-family:'Fredoka',sans-serif; }
+        .wrap { max-width:1140px; margin:0 auto; padding:0 24px; }
+        a { text-decoration:none; }
+
+        header { position:sticky; top:0; z-index:50; background:rgba(244,243,239,.88); backdrop-filter:blur(12px); border-bottom:1px solid rgba(125,160,184,.18); }
+        .nav { display:flex; align-items:center; justify-content:space-between; height:78px; }
+        .brand img { height:46px; }
+        .nav-links { display:flex; gap:30px; }
+        .nav-links a { color:var(--ink); font-weight:700; font-size:.98rem; transition:color .2s; }
+        .nav-links a:hover { color:var(--coral-dark); }
+        .btn { font-family:'Nunito',sans-serif; border:none; cursor:pointer; font-weight:800; padding:13px 26px; border-radius:999px; font-size:.95rem; transition:transform .15s,background .2s; display:inline-flex; align-items:center; justify-content:center; }
+        .btn-coral { background:var(--coral); color:#fff; box-shadow:0 8px 20px rgba(251,138,96,.35); }
+        .btn-coral:hover { background:var(--coral-dark); transform:translateY(-2px); }
+        .btn-ghost { background:transparent; color:var(--ink); border:2px solid rgba(125,160,184,.4); }
+        .btn-ghost:hover { border-color:var(--coral); color:var(--coral-dark); }
+        .btn-sm { padding:10px 20px; font-size:.88rem; }
+
+        .page-wrap { max-width:860px; margin:0 auto; padding:2.5rem 24px 4rem; }
+        .breadcrumb { font-size:.82rem; font-weight:700; color:var(--muted); margin-bottom:.25rem; }
+        .breadcrumb a { color:var(--coral); }
+        .page-wrap h1 { font-size:2rem; font-weight:700; margin-bottom:1.75rem; }
+
+        .form-card { background:#fff; border-radius:22px; padding:2.25rem; border:4px solid #fcd9c8; box-shadow:var(--shadow); }
+
+        /* layout: foto à esquerda, campos à direita */
+        .form-layout { display:grid; grid-template-columns:260px 1fr; gap:1.5rem; align-items:start; }
+
+        /* upload */
+        .upload-col { display:flex; flex-direction:column; gap:.6rem; }
+        .upload-label { font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:var(--blue-deep); }
+        .upload-area { border:2px dashed #E8E0D8; border-radius:16px; background:var(--cream); cursor:pointer; transition:border-color .2s, background .2s; overflow:hidden; position:relative; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; }
+        .upload-area:hover { border-color:var(--coral); background:#FEF0E8; }
+        .upload-area.has-img { border-style:solid; border-color:#fcd9c8; }
+        .upload-placeholder { display:flex; flex-direction:column; align-items:center; gap:.5rem; padding:1.5rem; text-align:center; pointer-events:none; }
+        .upload-placeholder svg { color:var(--muted); }
+        .upload-placeholder strong { font-size:.88rem; font-weight:800; }
+        .upload-placeholder span { font-size:.76rem; color:var(--muted); font-weight:600; }
+        .upload-placeholder em { font-size:.73rem; font-weight:700; font-style:normal; color:var(--coral); background:#FEF0E8; padding:3px 10px; border-radius:999px; }
+        #preview-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:none; }
+        .change-btn { position:absolute; bottom:10px; right:10px; background:rgba(255,255,255,.92); backdrop-filter:blur(6px); border:none; border-radius:999px; padding:5px 12px; font-family:'Nunito',sans-serif; font-size:.76rem; font-weight:800; cursor:pointer; display:none; box-shadow:0 2px 8px rgba(0,0,0,.1); }
+        #foto-input { display:none; }
+
+        /* campos */
+        .fields { display:grid; grid-template-columns:1fr 1fr; gap:1rem; align-content:start; }
+        .fg { display:flex; flex-direction:column; gap:.35rem; }
+        .fg.full { grid-column:1/-1; }
+        label { font-size:.78rem; font-weight:800; color:var(--blue-deep); text-transform:uppercase; letter-spacing:.04em; }
+        input[type=text], select, textarea { padding:.65rem .875rem; border:2px solid #E8E0D8; border-radius:10px; font-family:'Nunito',sans-serif; font-size:.9rem; font-weight:600; background:var(--cream); width:100%; transition:border-color .15s; }
+        input:focus, select:focus, textarea:focus { outline:none; border-color:var(--coral); background:#fff; }
+        textarea { resize:vertical; min-height:80px; }
+        .hint { font-size:.72rem; color:var(--muted); font-weight:600; }
+
+        .form-footer { display:flex; justify-content:flex-end; gap:.75rem; margin-top:1.75rem; padding-top:1.25rem; border-top:1px solid #eee; }
+
+        footer { padding:40px 0 28px; border-top:1px solid rgba(125,160,184,.18); }
+        .foot { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+        .foot img { height:40px; }
+        .foot p { color:var(--muted); font-size:.9rem; margin-top:6px; }
+        .foot-links { display:flex; gap:22px; }
+        .foot-links a { color:var(--ink); font-weight:700; font-size:.9rem; }
+        .foot-links a:hover { color:var(--coral-dark); }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="wrap nav">
+        <a class="brand" th:href="@{/}"><img th:src="@{/images/logo.jpeg}" alt="Cat Center"></a>
+        <nav class="nav-links">
+            <a th:href="@{/adotar}" class="active">Adotar</a>
+            <a th:href="@{/#como}">Como funciona</a>
+            <a th:href="@{/#contato}">Contato</a>
+        </nav>
+        <a th:href="@{/adotar}" class="btn btn-coral">Ver gatinhos</a>
+    </div>
+</header>
+
+<div class="page-wrap">
+    <div class="breadcrumb"><a th:href="@{/adotar}">Gatinhos</a> › <span th:text="${id != null} ? 'Editar' : 'Cadastrar'"></span></div>
+    <h1 th:text="${id != null} ? 'Editar gato' : 'Cadastrar novo gato'"></h1>
+
+    <div class="form-card">
+        <form th:action="${id != null} ? @{/gato/{id}/editar(id=${id})} : @{/gato/novo}"
+              th:object="${gato}" method="post" enctype="multipart/form-data">
+            <div class="form-layout">
+
+                <!-- Upload de foto -->
+                <div class="upload-col">
+                    <span class="upload-label">Foto do gato</span>
+                    <div class="upload-area" id="upload-area" onclick="document.getElementById('foto-input').click()">
+                        <img id="preview-img"
+                             th:if="${gato.foto != null and !#strings.isEmpty(gato.foto)}"
+                             th:src="@{/images/gatos/__${gato.foto}__}" alt="">
+                        <div class="upload-placeholder" id="upload-placeholder">
+                            <svg width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
+                            </svg>
+                            <strong>Clique para enviar</strong>
+                            <span>ou arraste a foto aqui</span>
+                            <em>JPG · PNG · WEBP · 10 MB</em>
+                        </div>
+                        <button type="button" class="change-btn" id="change-btn">Trocar foto</button>
+                        <input type="file" id="foto-input" name="arquivo" accept="image/*">
+                    </div>
+                </div>
+
+                <!-- Campos -->
+                <div class="fields">
+                    <div class="fg"><label>Nome</label><input type="text" th:field="*{nome}" placeholder="Nome do gato"></div>
+                    <div class="fg"><label>Cor</label><input type="text" th:field="*{cor}" placeholder="Ex: laranja, preto"></div>
+                    <div class="fg">
+                        <label>Sexo</label>
+                        <select th:field="*{sexo}">
+                            <option value="">Selecione</option>
+                            <option th:each="s : ${sexos}" th:value="${s}" th:text="${s}"></option>
+                        </select>
+                    </div>
+                    <div class="fg">
+                        <label>Faixa Etária</label>
+                        <select th:field="*{faixaEtaria}">
+                            <option value="">Selecione</option>
+                            <option th:each="f : ${faixasEtarias}" th:value="${f}" th:text="${f}"></option>
+                        </select>
+                    </div>
+                    <div class="fg"><label>Tipo de Pelagem</label><input type="text" th:field="*{tipoPelagem}" placeholder="Ex: curta, longa"></div>
+                    <div class="fg">
+                        <label>Castrado</label>
+                        <select th:field="*{castrado}">
+                            <option value="">Selecione</option>
+                            <option th:each="c : ${castrados}" th:value="${c}" th:text="${c}"></option>
+                        </select>
+                    </div>
+                    <div th:if="${id != null}" class="fg">
+                        <label>Disponível</label>
+                        <select th:field="*{disponivel}">
+                            <option th:each="d : ${disponiveis}" th:value="${d}" th:text="${d}"></option>
+                        </select>
+                    </div>
+                    <div class="fg full">
+                        <label>Comorbidades</label>
+                        <textarea th:field="*{comorbidades}" placeholder="Ex: FeLV positivo, diabetes — ou 'nenhuma'"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-footer">
+                <a th:href="@{/adotar}" class="btn btn-ghost btn-sm">Cancelar</a>
+                <button type="submit" class="btn btn-coral btn-sm" th:text="${id != null} ? 'Salvar alterações' : 'Cadastrar gato'"></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer id="contato">
+    <div class="wrap foot">
+        <div><img th:src="@{/images/logo.jpeg}" alt="Cat Center"><p>© 2026 Cat Center · Abrigo de gatos · São Paulo, SP</p></div>
+        <div class="foot-links"><a href="#">Instagram</a><a href="#">WhatsApp</a><a href="mailto:contato@catcenter.com.br">E-mail</a></div>
+    </div>
+</footer>
+
+<script>
+    const input = document.getElementById('foto-input');
+    const preview = document.getElementById('preview-img');
+    const area = document.getElementById('upload-area');
+    const placeholder = document.getElementById('upload-placeholder');
+    const changeBtn = document.getElementById('change-btn');
+
+    if (preview && preview.getAttribute('src')) {
+        preview.style.display = 'block';
+        placeholder.style.display = 'none';
+        changeBtn.style.display = 'block';
+        area.classList.add('has-img');
+    }
+
+    input.addEventListener('change', function() {
+        const file = this.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = e => {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+            placeholder.style.display = 'none';
+            changeBtn.style.display = 'block';
+            area.classList.add('has-img');
+        };
+        reader.readAsDataURL(file);
+    });
+
+    area.addEventListener('dragover', e => { e.preventDefault(); area.style.borderColor = 'var(--coral)'; });
+    area.addEventListener('dragleave', () => { area.style.borderColor = ''; });
+    area.addEventListener('drop', e => {
+        e.preventDefault(); area.style.borderColor = '';
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) { input.files = e.dataTransfer.files; input.dispatchEvent(new Event('change')); }
+    });
+</script>
+</body>
+</html>

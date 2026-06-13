@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adotar — Cat Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --coral:#FB8A60; --coral-dark:#ef7146; --blue-deep:#7da0b8; --cream:#F4F3EF; --ink:#3a3a3a; --muted:#9a9a96; --shadow:0 14px 40px rgba(58,58,58,.08); }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Nunito',sans-serif; background:var(--cream); color:var(--ink); -webkit-font-smoothing:antialiased; }
+        h1,h2,h3 { font-family:'Fredoka',sans-serif; }
+        .wrap { max-width:1140px; margin:0 auto; padding:0 24px; }
+        a { text-decoration:none; }
+
+        header { position:sticky; top:0; z-index:50; background:rgba(244,243,239,.88); backdrop-filter:blur(12px); border-bottom:1px solid rgba(125,160,184,.18); }
+        .nav { display:flex; align-items:center; justify-content:space-between; height:78px; }
+        .brand img { height:46px; }
+        .nav-links { display:flex; gap:30px; }
+        .nav-links a { color:var(--ink); font-weight:700; font-size:.98rem; transition:color .2s; }
+        .nav-links a:hover { color:var(--coral-dark); }
+        .btn { font-family:'Nunito',sans-serif; border:none; cursor:pointer; font-weight:800; padding:13px 26px; border-radius:999px; font-size:.95rem; transition:transform .15s,background .2s; display:inline-flex; align-items:center; justify-content:center; }
+        .btn-coral { background:var(--coral); color:#fff; box-shadow:0 8px 20px rgba(251,138,96,.35); }
+        .btn-coral:hover { background:var(--coral-dark); transform:translateY(-2px); }
+        .btn-ghost { background:transparent; color:var(--ink); border:2px solid rgba(125,160,184,.4); }
+        .btn-ghost:hover { border-color:var(--coral); color:var(--coral-dark); }
+        .btn-sm { padding:10px 20px; font-size:.88rem; }
+
+        .page-wrap { max-width:880px; margin:0 auto; padding:2.5rem 24px 4rem; }
+        .breadcrumb { font-size:.82rem; font-weight:700; color:var(--muted); margin-bottom:.25rem; }
+        .breadcrumb a { color:var(--coral); }
+        .page-wrap h1 { font-size:2rem; font-weight:700; margin-bottom:1.75rem; }
+
+        .adopt-layout { display:grid; grid-template-columns:260px 1fr; gap:1.5rem; align-items:start; }
+
+        .cat-preview { background:#fff; border-radius:22px; overflow:hidden; border:4px solid #fcd9c8; box-shadow:var(--shadow); position:sticky; top:90px; }
+        .cat-preview__img { height:200px; background:linear-gradient(160deg,#FDE8DE,#F5C5A8); overflow:hidden; }
+        .cat-preview__img img { width:100%; height:100%; object-fit:cover; display:block; }
+        .cat-preview__body { padding:1.125rem 1.25rem 1.25rem; }
+        .cat-preview__name { font-family:'Fredoka',sans-serif; font-size:1.4rem; font-weight:700; margin-bottom:.75rem; }
+        .cat-rows { display:flex; flex-direction:column; gap:.5rem; border-top:1px solid #eee; padding-top:.75rem; }
+        .cat-row { display:flex; justify-content:space-between; font-size:.84rem; }
+        .cat-row .k { font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
+        .cat-row .v { font-weight:800; }
+
+        .form-card { background:#fff; border-radius:22px; padding:2rem; border:4px solid #fcd9c8; box-shadow:var(--shadow); }
+        .form-card h3 { font-family:'Fredoka',sans-serif; font-size:1.3rem; margin-bottom:1.25rem; }
+        .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+        .fg { display:flex; flex-direction:column; gap:.35rem; }
+        .fg.full { grid-column:1/-1; }
+        label { font-size:.78rem; font-weight:800; color:var(--blue-deep); text-transform:uppercase; letter-spacing:.04em; }
+        input[type=text] { padding:.65rem .875rem; border:2px solid #E8E0D8; border-radius:10px; font-family:'Nunito',sans-serif; font-size:.9rem; font-weight:600; background:var(--cream); width:100%; transition:border-color .15s; }
+        input:focus { outline:none; border-color:var(--coral); background:#fff; }
+        .form-note { margin-top:1rem; padding:.875rem 1rem; background:#FEF0E8; border:1.5px solid #FFD0B5; border-radius:10px; font-size:.83rem; font-weight:700; color:#C05020; }
+        .form-footer { display:flex; justify-content:flex-end; gap:.75rem; margin-top:1.75rem; padding-top:1.25rem; border-top:1px solid #eee; }
+
+        footer { padding:40px 0 28px; border-top:1px solid rgba(125,160,184,.18); }
+        .foot { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+        .foot img { height:40px; }
+        .foot p { color:var(--muted); font-size:.9rem; margin-top:6px; }
+        .foot-links { display:flex; gap:22px; }
+        .foot-links a { color:var(--ink); font-weight:700; font-size:.9rem; }
+        .foot-links a:hover { color:var(--coral-dark); }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="wrap nav">
+        <a class="brand" th:href="@{/}"><img th:src="@{/images/logo.jpeg}" alt="Cat Center"></a>
+        <nav class="nav-links">
+            <a th:href="@{/adotar}">Adotar</a>
+            <a th:href="@{/#como}">Como funciona</a>
+            <a th:href="@{/#contato}">Contato</a>
+        </nav>
+        <a th:href="@{/adotar}" class="btn btn-coral">Ver gatinhos</a>
+    </div>
+</header>
+
+<div class="page-wrap">
+    <div class="breadcrumb"><a th:href="@{/adotar}">Gatinhos</a> › Adotar</div>
+    <h1>Solicitação de adoção</h1>
+
+    <div class="adopt-layout">
+        <div class="cat-preview">
+            <div class="cat-preview__img">
+                <img th:if="${gato.foto != null and !#strings.isEmpty(gato.foto)}"
+                     th:src="@{/images/gatos/__${gato.foto}__}" th:alt="${gato.nome}">
+            </div>
+            <div class="cat-preview__body">
+                <div class="cat-preview__name" th:text="${gato.nome}"></div>
+                <div class="cat-rows">
+                    <div class="cat-row"><span class="k">Sexo</span><span class="v" th:text="${gato.sexo.name() == 'FEMEA' ? 'Fêmea' : 'Macho'}"></span></div>
+                    <div class="cat-row"><span class="k">Faixa Etária</span><span class="v" th:text="${#strings.capitalize(#strings.toLowerCase(gato.faixaEtaria.name()))}"></span></div>
+                    <div class="cat-row"><span class="k">Cor</span><span class="v" th:text="${#strings.capitalize(#strings.toLowerCase(gato.cor))}"></span></div>
+                    <div class="cat-row"><span class="k">Pelagem</span><span class="v" th:text="${#strings.capitalize(#strings.toLowerCase(gato.tipoPelagem))}"></span></div>
+                    <div class="cat-row"><span class="k">Castrado</span><span class="v" th:text="${gato.castrado.name() == 'SIM' ? 'Sim' : 'Não'}"></span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <h3>Seus dados</h3>
+            <form th:action="@{/adotar/{id}(id=${gato.id})}" th:object="${adotante}" method="post">
+                <div class="form-grid">
+                    <div class="fg full"><label>Nome completo</label><input type="text" th:field="*{nome}" placeholder="Seu nome completo"></div>
+                    <div class="fg"><label>CPF</label><input type="text" th:field="*{cpf}" placeholder="000.000.000-00"></div>
+                    <div class="fg"><label>Telefone</label><input type="text" th:field="*{telefone}" placeholder="(00) 00000-0000"></div>
+                    <div class="fg"><label>CEP</label><input type="text" th:field="*{cep}" placeholder="00000-000"></div>
+                </div>
+                <div class="form-note">A solicitação será registrada como <strong>Pendente</strong>. Entraremos em contato em até 2 dias úteis.</div>
+                <div class="form-footer">
+                    <a th:href="@{/adotar}" class="btn btn-ghost btn-sm">Cancelar</a>
+                    <button type="submit" class="btn btn-coral btn-sm">Confirmar solicitação</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer id="contato">
+    <div class="wrap foot">
+        <div><img th:src="@{/images/logo.jpeg}" alt="Cat Center"><p>© 2026 Cat Center · Abrigo de gatos · São Paulo, SP</p></div>
+        <div class="foot-links"><a href="#">Instagram</a><a href="#">WhatsApp</a><a href="mailto:contato@catcenter.com.br">E-mail</a></div>
+    </div>
+</footer>
+</body>
+</html>

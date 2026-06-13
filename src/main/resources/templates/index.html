@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Center — Adoção de Gatos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --coral: #FB8A60;
+            --coral-dark: #ef7146;
+            --blue: #A3BED1;
+            --blue-deep: #7da0b8;
+            --cream: #F4F3EF;
+            --ink: #3a3a3a;
+            --muted: #9a9a96;
+            --white: #ffffff;
+            --radius: 22px;
+            --shadow: 0 14px 40px rgba(58,58,58,.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, .display { font-family: 'Fredoka', sans-serif; }
+
+        .wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+        .paw {
+            position: absolute;
+            width: 34px; height: 34px;
+            fill: var(--blue);
+            opacity: .55;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ---------- Header ---------- */
+        header {
+            position: sticky; top: 0; z-index: 50;
+            background: rgba(244,243,239,.88);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(125,160,184,.18);
+        }
+        .nav {
+            display: flex; align-items: center; justify-content: space-between;
+            height: 78px;
+        }
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .brand img { height: 46px; width: auto; }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links a {
+            text-decoration: none; color: var(--ink); font-weight: 700;
+            font-size: .98rem; transition: color .2s;
+        }
+        .nav-links a:hover { color: var(--coral-dark); }
+        .btn {
+            font-family: 'Nunito', sans-serif;
+            border: none; cursor: pointer; font-weight: 800;
+            padding: 13px 26px; border-radius: 999px; font-size: .95rem;
+            transition: transform .15s, box-shadow .2s, background .2s;
+            text-decoration: none; display: inline-flex; align-items: center;
+        }
+        .btn-coral { background: var(--coral); color: #fff; box-shadow: 0 8px 20px rgba(251,138,96,.35); }
+        .btn-coral:hover { background: var(--coral-dark); transform: translateY(-2px); }
+        .btn-ghost { background: transparent; color: var(--ink); border: 2px solid rgba(125,160,184,.4); }
+        .btn-ghost:hover { border-color: var(--coral); color: var(--coral-dark); }
+
+        /* ---------- Hero ---------- */
+        .hero { position: relative; padding: 80px 0 60px; overflow: hidden; }
+        .hero-grid {
+            display: grid; grid-template-columns: 1.05fr .95fr;
+            gap: 50px; align-items: center;
+        }
+        .hero .eyebrow {
+            display: inline-block; background: rgba(163,190,209,.3);
+            color: var(--blue-deep); font-weight: 800; font-size: .8rem;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            padding: 7px 16px; border-radius: 999px; margin-bottom: 22px;
+        }
+        .hero h1 {
+            font-size: clamp(2.4rem, 5vw, 3.7rem); font-weight: 700;
+            line-height: 1.08; letter-spacing: -.5px;
+        }
+        .hero h1 .accent { color: var(--coral); }
+        .hero p { font-size: 1.12rem; color: #6b6b67; margin: 22px 0 30px; max-width: 480px; }
+        .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+
+        .hero-photo {
+            position: relative; border-radius: 32px; overflow: hidden;
+            box-shadow: var(--shadow); aspect-ratio: 4/4.2;
+            border: 6px solid #fff;
+        }
+        .hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .hero-badge {
+            position: absolute; bottom: 18px; left: 18px;
+            background: #fff; border-radius: 16px; padding: 10px 16px;
+            box-shadow: var(--shadow); display: flex; align-items: center; gap: 10px;
+            font-weight: 800; font-size: .95rem;
+        }
+        .hero-badge .dot {
+            width: 30px; height: 30px; background: var(--coral); border-radius: 50%;
+            display: grid; place-items: center; flex-shrink: 0;
+        }
+        .hero-badge .dot svg { width: 18px; height: 18px; fill: #fff; }
+
+        /* ---------- Search bar ---------- */
+        .search-bar {
+            background: #fff; border-radius: 18px; box-shadow: var(--shadow);
+            display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 6px;
+            padding: 10px; margin-top: 34px; max-width: 560px;
+        }
+        .search-bar .field { padding: 8px 14px; }
+        .search-bar label { display: block; font-size: .7rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: .5px; color: var(--muted); }
+        .search-bar select {
+            border: none; background: transparent; font-family: 'Nunito'; font-weight: 700;
+            font-size: .95rem; color: var(--ink); width: 100%; cursor: pointer; outline: none;
+        }
+
+        /* ---------- Stats ---------- */
+        .stats { display: flex; gap: 50px; margin-top: 40px; }
+        .stats .num { font-family: 'Fredoka'; font-size: 2rem; color: var(--coral); font-weight: 700; }
+        .stats .lbl { font-size: .85rem; color: var(--muted); font-weight: 700; }
+
+        /* ---------- Adoption section ---------- */
+        .adopt { padding: 80px 0 100px; position: relative; }
+        .section-head { text-align: center; margin-bottom: 48px; position: relative; z-index: 2; }
+        .section-head .eyebrow {
+            color: var(--blue-deep); font-weight: 800; letter-spacing: 2px;
+            text-transform: uppercase; font-size: .8rem;
+        }
+        .section-head h2 { font-size: clamp(2rem,4vw,2.8rem); font-weight: 700; margin-top: 8px; }
+        .section-head p { color: #6b6b67; margin-top: 10px; }
+
+        .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+
+        /* ---------- Cat card (flip) ---------- */
+        .card { height: 580px; perspective: 1200px; }
+
+        .card-inner {
+            width: 100%; height: 100%; position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+            will-change: transform;
+        }
+
+        .card.virado .card-inner { transform: rotateY(180deg); }
+
+        .card-front, .card-back {
+            position: absolute; inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: var(--radius);
+            display: flex; flex-direction: column;
+        }
+
+        .card-front { background: #fff; border: 4px solid #fcd9c8; box-shadow: var(--shadow); overflow: hidden; }
+        .card-back { transform: rotateY(180deg); background: linear-gradient(150deg, #3D3030, #2E2424); overflow: hidden; }
+
+        .card-media { position: relative; padding: 14px 14px 0; flex-shrink: 0; }
+        .card-media img {
+            width: 100%; height: 200px; object-fit: cover;
+            border-radius: 16px; display: block;
+        }
+        .card-media .no-photo {
+            width: 100%; height: 200px; border-radius: 16px;
+            background: linear-gradient(160deg,#FDE8DE,#F5C5A8);
+        }
+        .status {
+            position: absolute; top: 26px; left: 26px;
+            background: #fff; border-radius: 999px; padding: 6px 14px;
+            font-weight: 800; font-size: .8rem;
+            display: flex; align-items: center; gap: 7px;
+            box-shadow: 0 4px 12px rgba(0,0,0,.08);
+        }
+        .status-disponivel { color: #2e9e5b; }
+        .status-disponivel::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: #2e9e5b; display: inline-block; }
+        .status-indisponivel { color: #c0392b; }
+        .status-indisponivel::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: #c0392b; display: inline-block; }
+
+        .card-body { padding: 18px 22px 22px; display: flex; flex-direction: column; flex: 1; }
+        .card-body h3 { font-size: 1.7rem; font-weight: 700; line-height: 1.1; }
+        .card-loc {
+            color: var(--muted); font-weight: 700; font-size: .92rem; margin-top: 4px;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .card-loc svg { width: 14px; height: 14px; fill: var(--coral); flex-shrink: 0; }
+        .specs { list-style: none; margin: 18px 0; border-top: 1px solid #eee; }
+        .specs li {
+            display: flex; justify-content: space-between; padding: 11px 0;
+            border-bottom: 1px solid #f0efeb; font-size: .92rem;
+        }
+        .specs .k { color: var(--muted); font-weight: 700; text-transform: uppercase;
+            letter-spacing: .5px; font-size: .78rem; }
+        .specs .v { font-weight: 800; color: var(--ink); }
+        .card-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: auto; }
+        .card-actions .btn { padding: 12px; font-size: .92rem; justify-content: center; }
+        .btn-disabled { background: #ddd !important; box-shadow: none !important;
+            color: #999 !important; cursor: not-allowed; pointer-events: none; }
+
+        /* BACK */
+        .back-body { padding: 1.375rem; display: flex; flex-direction: column; gap: .8rem; height: 100%; }
+        .back-head { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
+        .back-head h3 { font-size: 1.5rem; color: #F4F3EF; font-family: 'Fredoka', sans-serif; }
+        .back-tag { font-size: .72rem; font-weight: 800; padding: 5px 12px; border-radius: 999px; background: rgba(255,255,255,.12); color: rgba(244,243,239,.8); border: 1px solid rgba(255,255,255,.15); white-space: nowrap; flex-shrink: 0; }
+        .dlist { list-style: none; border-top: 1px solid rgba(255,255,255,.1); border-bottom: 1px solid rgba(255,255,255,.1); padding: .5rem 0; display: flex; flex-direction: column; gap: .5rem; flex: 1; }
+        .dlist li { display: flex; justify-content: space-between; font-size: .85rem; }
+        .dl { font-size: .65rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(244,243,239,.38); }
+        .dv { font-weight: 700; color: rgba(244,243,239,.92); }
+        .back-desc { font-size: .83rem; color: rgba(244,243,239,.5); line-height: 1.65; }
+        .back-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .back-btns .btn { padding: 11px; font-size: .87rem; justify-content: center; }
+        .btn-inv { background: rgba(255,255,255,.12); color: rgba(244,243,239,.9); border: 1.5px solid rgba(255,255,255,.2); border-radius: 999px; }
+        .btn-inv:hover { background: rgba(255,255,255,.2); }
+
+        /* ---------- CTA banner ---------- */
+        .banner-wrap { padding: 0 24px 80px; max-width: 1140px; margin: 0 auto; }
+        .banner {
+            background: var(--coral); border-radius: 30px; padding: 54px 40px;
+            text-align: center; color: #fff; position: relative; overflow: hidden;
+        }
+        .banner h2 { font-size: clamp(1.7rem,3.5vw,2.4rem); }
+        .banner p { opacity: .95; margin: 12px auto 26px; max-width: 480px; }
+        .banner .btn-white { background: #fff; color: var(--coral-dark); border: none;
+            box-shadow: 0 8px 20px rgba(0,0,0,.12); }
+        .banner .btn-white:hover { background: #fef3ee; }
+        .banner .paw { fill: #fff; opacity: .18; }
+
+        /* ---------- Footer ---------- */
+        footer { padding: 40px 0 28px; border-top: 1px solid rgba(125,160,184,.18); }
+        .foot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .foot img { height: 40px; }
+        .foot p { color: var(--muted); font-size: .9rem; margin-top: 6px; }
+        .foot .links { display: flex; gap: 22px; }
+        .foot .links a { color: var(--ink); text-decoration: none; font-weight: 700; font-size: .9rem; }
+        .foot .links a:hover { color: var(--coral-dark); }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 900px) {
+            .hero-grid { grid-template-columns: 1fr; }
+            .hero-photo { max-width: 420px; margin: 0 auto; }
+            .cards { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+            .nav-links { display: none; }
+            .search-bar { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+    <div class="wrap nav">
+        <a class="brand" th:href="@{/}">
+            <img th:src="@{/images/logo.jpeg}" alt="Cat Center">
+        </a>
+        <nav class="nav-links">
+            <a th:href="@{/adotar}">Adotar</a>
+            <a href="#como">Como funciona</a>
+            <a href="#contato">Contato</a>
+        </nav>
+        <a th:href="@{/adotar}" class="btn btn-coral">Ver gatinhos</a>
+    </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+    <svg class="paw" style="top:120px;left:6%" viewBox="0 0 512 512"><path d="M226 130c0 41-25 70-50 70s-50-29-50-70 25-70 50-70 50 29 50 70zm160 0c0 41-25 70-50 70s-50-29-50-70 25-70 50-70 50 29 50 70zM120 250c0 33-20 56-40 56s-40-23-40-56 20-56 40-56 40 23 40 56zm352 0c0 33-20 56-40 56s-40-23-40-56 20-56 40-56 40 23 40 56zM256 250c52 0 96 60 96 110 0 32-26 52-58 52-22 0-30-8-38-8s-16 8-38 8c-32 0-58-20-58-52 0-50 44-110 96-110z"/></svg>
+    <svg class="paw" style="bottom:40px;right:4%;width:48px;height:48px" viewBox="0 0 512 512"><path d="M226 130c0 41-25 70-50 70s-50-29-50-70 25-70 50-70 50 29 50 70zm160 0c0 41-25 70-50 70s-50-29-50-70 25-70 50-70 50 29 50 70zM120 250c0 33-20 56-40 56s-40-23-40-56 20-56 40-56 40 23 40 56zm352 0c0 33-20 56-40 56s-40-23-40-56 20-56 40-56 40 23 40 56zM256 250c52 0 96 60 96 110 0 32-26 52-58 52-22 0-30-8-38-8s-16 8-38 8c-32 0-58-20-58-52 0-50 44-110 96-110z"/></svg>
+
+    <div class="wrap hero-grid">
+        <div>
+            <span class="eyebrow">🐾 Abrigo de gatos · São Paulo</span>
+            <h1>Encontre o <span class="accent">melhor amigo</span> de quatro patas</h1>
+            <p>No Cat Center cada gato espera por um lar cheio de carinho. Adote, transforme uma vida e ganhe um companheiro para sempre.</p>
+            <div class="hero-cta">
+                <a th:href="@{/adotar}" class="btn btn-coral">Ver gatos para adoção</a>
+                <a href="#como" class="btn btn-ghost">Como adotar</a>
+            </div>
+
+            <div class="search-bar">
+                <div class="field">
+                    <label>Sexo</label>
+                    <select><option>Todos</option><option>Fêmea</option><option>Macho</option></select>
+                </div>
+                <div class="field">
+                    <label>Idade</label>
+                    <select><option>Todas</option><option>Filhote</option><option>Jovem</option><option>Adulto</option><option>Idoso</option></select>
+                </div>
+                <div class="field">
+                    <label>Pelagem</label>
+                    <select><option>Todas</option><option>Curta</option><option>Longa</option><option>Média</option></select>
+                </div>
+                <button class="btn btn-coral">Buscar</button>
+            </div>
+
+            <div class="stats">
+                <div><div class="num">320+</div><div class="lbl">Adoções felizes</div></div>
+                <div><div class="num">40</div><div class="lbl">Gatos no abrigo</div></div>
+                <div><div class="num">8</div><div class="lbl">Anos cuidando</div></div>
+            </div>
+        </div>
+
+        <div class="hero-photo">
+            <img th:src="@{/images/gatos/orpheu.jpeg}" alt="Orpheu — disponível para adoção">
+            <div class="hero-badge">
+                <span class="dot">
+                    <svg viewBox="0 0 512 512"><path d="M226 130c0 41-25 70-50 70s-50-29-50-70 25-70 50-70 50 29 50 70zm160 0c0 41-25 70-50 70s-50-29-50-70 25-70 50-70 50 29 50 70zM120 250c0 33-20 56-40 56s-40-23-40-56 20-56 40-56 40 23 40 56zm352 0c0 33-20 56-40 56s-40-23-40-56 20-56 40-56 40 23 40 56zM256 250c52 0 96 60 96 110 0 32-26 52-58 52-22 0-30-8-38-8s-16 8-38 8c-32 0-58-20-58-52 0-50 44-110 96-110z"/></svg>
+                </span>
+                Adote-me hoje!
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Cat cards -->
+<section class="adopt" id="adotar">
+    <div class="wrap">
+        <div class="section-head">
+            <span class="eyebrow">Disponíveis para adoção</span>
+            <h2>Conheça nossos gatinhos</h2>
+            <p>Todos castrados, vacinados e prontos para um novo lar.</p>
+        </div>
+
+        <div class="cards">
+            <article th:each="gato : ${gatos}" class="card">
+                <div class="card-inner">
+
+                    <!-- FRENTE -->
+                    <div class="card-front">
+                        <div class="card-media">
+                            <span th:if="${gato.disponivel.name() == 'SIM'}"
+                                  class="status status-disponivel">Disponível</span>
+                            <span th:if="${gato.disponivel.name() == 'NAO'}"
+                                  class="status status-indisponivel">Indisponível</span>
+                            <img th:if="${gato.foto != null and !#strings.isEmpty(gato.foto)}"
+                                 th:src="@{/images/gatos/__${gato.foto}__}"
+                                 th:alt="${gato.nome}">
+                            <div th:if="${gato.foto == null or #strings.isEmpty(gato.foto)}"
+                                 class="no-photo"></div>
+                        </div>
+                        <div class="card-body">
+                            <h3 th:text="${gato.nome}">Nome</h3>
+                            <div class="card-loc">
+                                <svg viewBox="0 0 384 512"><path d="M192 0C86 0 0 86 0 192c0 87 124 250 171 309a26 26 0 0040 0c47-59 173-222 173-309C384 86 298 0 192 0zm0 272a80 80 0 110-160 80 80 0 010 160z"/></svg>
+                                São Paulo, SP
+                            </div>
+                            <ul class="specs">
+                                <li><span class="k">Sexo</span><span class="v" th:text="${gato.sexo.name() == 'FEMEA' ? 'Fêmea' : 'Macho'}"></span></li>
+                                <li><span class="k">Faixa etária</span><span class="v" th:text="${#strings.capitalize(#strings.toLowerCase(gato.faixaEtaria.name()))}"></span></li>
+                                <li><span class="k">Pelagem</span><span class="v" th:text="${#strings.capitalize(#strings.toLowerCase(gato.tipoPelagem))}"></span></li>
+                            </ul>
+                            <div class="card-actions">
+                                <button class="btn btn-ghost" onclick="virarCard(this)">Saber mais</button>
+                                <a th:if="${gato.disponivel.name() == 'SIM'}"
+                                   th:href="@{/adotar/{id}(id=${gato.id})}" class="btn btn-coral">Adotar</a>
+                                <span th:if="${gato.disponivel.name() == 'NAO'}"
+                                      class="btn btn-coral btn-disabled">Indisponível</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VERSO -->
+                    <div class="card-back">
+                        <div class="back-body">
+                            <div class="back-head">
+                                <h3 th:text="${gato.nome}"></h3>
+                                <span class="back-tag" th:text="${gato.disponivel.name() == 'SIM' ? 'Disponível' : 'Indisponível'}"></span>
+                            </div>
+                            <ul class="dlist">
+                                <li><span class="dl">Sexo</span><span class="dv" th:text="${gato.sexo.name() == 'FEMEA' ? 'Fêmea' : 'Macho'}"></span></li>
+                                <li><span class="dl">Faixa Etária</span><span class="dv" th:text="${#strings.capitalize(#strings.toLowerCase(gato.faixaEtaria.name()))}"></span></li>
+                                <li><span class="dl">Cor</span><span class="dv" th:text="${#strings.capitalize(#strings.toLowerCase(gato.cor))}"></span></li>
+                                <li><span class="dl">Pelagem</span><span class="dv" th:text="${#strings.capitalize(#strings.toLowerCase(gato.tipoPelagem))}"></span></li>
+                                <li><span class="dl">Castrado</span><span class="dv" th:text="${gato.castrado.name() == 'SIM' ? 'Sim' : 'Não'}"></span></li>
+                            </ul>
+                            <p class="back-desc" th:text="${gato.comorbidades != null and !#strings.isEmpty(gato.comorbidades) and !#strings.equalsIgnoreCase(gato.comorbidades, 'nenhuma')} ? 'Observações: ' + ${gato.comorbidades} : 'Saudável, sem comorbidades. Castrado e vacinado.'"></p>
+                            <div class="back-btns">
+                                <button class="btn btn-inv" onclick="voltarCard(this)">← Voltar</button>
+                                <a th:if="${gato.disponivel.name() == 'SIM'}"
+                                   th:href="@{/adotar/{id}(id=${gato.id})}" class="btn btn-coral">Quero adotar</a>
+                                <span th:if="${gato.disponivel.name() == 'NAO'}"
+                                      class="btn btn-coral btn-disabled">Indisponível</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- Como funciona -->
+<section style="padding:0 24px 80px;max-width:1140px;margin:0 auto" id="como">
+    <div style="text-align:center;margin-bottom:48px">
+        <span style="color:#7da0b8;font-weight:800;letter-spacing:2px;text-transform:uppercase;font-size:.8rem">Como funciona</span>
+        <h2 style="font-family:'Fredoka',sans-serif;font-size:clamp(2rem,4vw,2.8rem);font-weight:700;margin-top:8px">Adoção simples e com suporte</h2>
+        <p style="color:#6b6b67;margin-top:10px">Cada passo foi pensado para garantir um lar responsável e feliz.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+        <div style="background:#fff;border-radius:22px;padding:2rem;border:2px solid #fcd9c8;text-align:center">
+            <div style="font-size:2.2rem;margin-bottom:1rem">🔍</div>
+            <h3 style="font-family:'Fredoka',sans-serif;font-size:1.25rem;margin-bottom:.5rem">Explore os perfis</h3>
+            <p style="font-size:.9rem;color:#6b6b67">Navegue pelas fotos e características de cada gatinho disponível.</p>
+        </div>
+        <div style="background:#fff;border-radius:22px;padding:2rem;border:2px solid #fcd9c8;text-align:center">
+            <div style="font-size:2.2rem;margin-bottom:1rem">💌</div>
+            <h3 style="font-family:'Fredoka',sans-serif;font-size:1.25rem;margin-bottom:.5rem">Entre em contato</h3>
+            <p style="font-size:.9rem;color:#6b6b67">Clique em "Adotar" e inicie o processo com nossa equipe.</p>
+        </div>
+        <div style="background:#fff;border-radius:22px;padding:2rem;border:2px solid #fcd9c8;text-align:center">
+            <div style="font-size:2.2rem;margin-bottom:1rem">🏡</div>
+            <h3 style="font-family:'Fredoka',sans-serif;font-size:1.25rem;margin-bottom:.5rem">Leve para casa</h3>
+            <p style="font-size:.9rem;color:#6b6b67">Após aprovação, seu novo companheiro vai para o lar com suporte completo.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA banner -->
+<div class="banner-wrap">
+    <div class="banner">
+        <svg class="paw" style="top:20px;left:30px;width:70px;height:70px" viewBox="0 0 512 512"><path d="M226 130c0 41-25 70-50 70s-50-29-50-70 25-70 50-70 50 29 50 70zm160 0c0 41-25 70-50 70s-50-29-50-70 25-70 50-70 50 29 50 70zM120 250c0 33-20 56-40 56s-40-23-40-56 20-56 40-56 40 23 40 56zm352 0c0 33-20 56-40 56s-40-23-40-56 20-56 40-56 40 23 40 56zM256 250c52 0 96 60 96 110 0 32-26 52-58 52-22 0-30-8-38-8s-16 8-38 8c-32 0-58-20-58-52 0-50 44-110 96-110z"/></svg>
+        <svg class="paw" style="bottom:20px;right:40px;width:90px;height:90px" viewBox="0 0 512 512"><path d="M226 130c0 41-25 70-50 70s-50-29-50-70 25-70 50-70 50 29 50 70zm160 0c0 41-25 70-50 70s-50-29-50-70 25-70 50-70 50 29 50 70zM120 250c0 33-20 56-40 56s-40-23-40-56 20-56 40-56 40 23 40 56zm352 0c0 33-20 56-40 56s-40-23-40-56 20-56 40-56 40 23 40 56zM256 250c52 0 96 60 96 110 0 32-26 52-58 52-22 0-30-8-38-8s-16 8-38 8c-32 0-58-20-58-52 0-50 44-110 96-110z"/></svg>
+        <h2>Não pode adotar agora?</h2>
+        <p>Você pode apadrinhar um gatinho, doar ração ou ser um lar temporário. Toda ajuda conta!</p>
+        <button class="btn btn-white">Quero contribuir</button>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer id="contato">
+    <div class="wrap foot">
+        <div>
+            <img th:src="@{/images/logo.jpeg}" alt="Cat Center">
+            <p>© 2026 Cat Center · Abrigo de gatos · São Paulo, SP</p>
+        </div>
+        <div class="links">
+            <a href="#">Instagram</a>
+            <a href="#">WhatsApp</a>
+            <a href="mailto:contato@catcenter.com.br">E-mail</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function virarCard(btn) { btn.closest('.card').classList.add('virado'); }
+    function voltarCard(btn) { btn.closest('.card').classList.remove('virado'); }
+</script>
+</body>
+</html>

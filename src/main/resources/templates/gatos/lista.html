@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gatos — Cat Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <style>
+        .cat-card__image {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+            background: linear-gradient(160deg, #FDE8DE 0%, #F5C5A8 100%);
+        }
+
+        .cat-card__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .cat-card__image .placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cat-card__image .placeholder svg {
+            width: 80px;
+            height: 80px;
+            opacity: .25;
+        }
+
+        /* gradient overlay — name appears on photo */
+        .cat-card__overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 1.125rem 0.875rem;
+            background: linear-gradient(to top, rgba(30,18,18,.82) 0%, transparent 100%);
+        }
+
+        .cat-card__overlay-name {
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: -.01em;
+        }
+
+        .cat-card__overlay-sub {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,.75);
+            font-weight: 700;
+            margin-top: 0.1rem;
+        }
+
+        .cat-card__badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        /* below the photo */
+        .cat-card__info {
+            padding: 0.875rem 1.125rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cat-card__info-row {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            line-height: 1.8;
+        }
+
+        .cat-card__info-row span {
+            color: var(--text);
+        }
+
+        .cat-card__footer {
+            padding: 0.875rem 1.125rem;
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .grid {
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a th:href="@{/}" class="navbar-brand">
+        <img th:src="@{/images/logo.jpeg}" alt="Cat Center">
+    </a>
+    <div class="navbar-links">
+        <a th:href="@{/gatos}" class="active">Gatos</a>
+        <a th:href="@{/adotantes}">Adotantes</a>
+        <a th:href="@{/adocoes}">Adoções</a>
+        <a th:href="@{/gato/novo}" class="navbar-cta">+ Cadastrar</a>
+    </div>
+</nav>
+
+<div class="page-top">
+    <div>
+        <div class="breadcrumb">Painel &rsaquo; Gatos</div>
+        <h1>Gatos</h1>
+    </div>
+</div>
+
+<div class="container">
+
+    <div th:if="${#lists.isEmpty(gatos)}" class="empty">
+        <div class="empty__title">Nenhum gato cadastrado</div>
+        <div class="empty__sub">Cadastre o primeiro gato do Cat Center</div>
+        <a th:href="@{/gato/novo}" class="btn btn-primary" style="margin-top:1.25rem">Cadastrar gato</a>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(gatos)}" class="grid">
+        <div th:each="gato : ${gatos}" class="cat-card">
+
+            <!-- FOTO com overlay do nome -->
+            <div class="cat-card__image">
+
+                <img th:if="${gato.foto != null and !#strings.isEmpty(gato.foto)}"
+                     th:src="@{/images/gatos/__${gato.foto}__}"
+                     th:alt="${gato.nome}">
+
+                <div th:if="${gato.foto == null or #strings.isEmpty(gato.foto)}" class="placeholder">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 20 L8 8 L20 20" stroke="#F07850" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M56 20 L56 8 L44 20" stroke="#F07850" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        <ellipse cx="32" cy="36" rx="22" ry="18" fill="#F07850" opacity=".25"/>
+                        <circle cx="24" cy="32" r="3" fill="#F07850" opacity=".4"/>
+                        <circle cx="40" cy="32" r="3" fill="#F07850" opacity=".4"/>
+                        <path d="M29 39 Q32 42 35 39" stroke="#F07850" stroke-width="2" stroke-linecap="round" fill="none" opacity=".5"/>
+                    </svg>
+                </div>
+
+                <div class="cat-card__overlay">
+                    <div class="cat-card__overlay-name" th:text="${gato.nome}"></div>
+                    <div class="cat-card__overlay-sub">
+                        <span th:text="${gato.faixaEtaria}"></span>
+                        &nbsp;&bull;&nbsp;
+                        <span th:text="${gato.sexo}"></span>
+                    </div>
+                </div>
+
+                <div class="cat-card__badge">
+                    <span th:if="${gato.disponivel.name() == 'SIM'}" class="badge badge-green">Disponível</span>
+                    <span th:if="${gato.disponivel.name() == 'NAO'}" class="badge badge-red">Indisponível</span>
+                </div>
+            </div>
+
+            <!-- INFO abaixo da foto -->
+            <div class="cat-card__info">
+                <div class="cat-card__info-row">
+                    <span th:text="${gato.cor}"></span> &bull; <span th:text="${gato.tipoPelagem}"></span>
+                </div>
+                <div class="cat-card__info-row">
+                    Castrado:&nbsp;<span th:text="${gato.castrado}"></span>
+                    <span th:if="${gato.comorbidades != null
+                                   and !#strings.isEmpty(gato.comorbidades)
+                                   and !#strings.equalsIgnoreCase(gato.comorbidades, 'nenhuma')}">
+                        &nbsp;&bull;&nbsp;<span class="badge badge-orange" th:text="${gato.comorbidades}"></span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- BOTÕES -->
+            <div class="cat-card__footer">
+                <a th:href="@{/gato/{id}/editar(id=${gato.id})}" class="btn btn-primary btn-sm" style="flex:1;justify-content:center">Editar</a>
+                <a th:href="@{/gato/{id}/deletar(id=${gato.id})}"
+                   class="btn btn-ghost btn-sm"
+                   onclick="return confirm('Tem certeza que deseja remover este gato?')">Remover</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<footer>Cat Center &mdash; Sistema de Gestão de Adoções</footer>
+</body>
+</html>
