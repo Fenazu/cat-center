@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: catshelter
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 15MB
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://127.0.0.1:5432/catshelter}
+    username: ${SPRING_DATASOURCE_USERNAME:fernanda.omizu}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+    driverClassName: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema-postgresql.sql
+
+app:
+  upload-dir: ${UPLOAD_DIR:${user.dir}/src/main/resources/static/images/gatos/}
