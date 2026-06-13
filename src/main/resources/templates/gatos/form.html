@@ -152,7 +152,8 @@
                     </div>
                     <div class="fg full">
                         <label>Comorbidades</label>
-                        <textarea th:field="*{comorbidades}" placeholder="Ex: FeLV positivo, diabetes — ou 'nenhuma'"></textarea>
+                        <textarea th:field="*{comorbidades}" placeholder="Ex: FeLV positivo, saudável e vacinado…" maxlength="150"></textarea>
+                        <small style="color:var(--muted);font-size:.78rem">máx. 150 caracteres</small>
                     </div>
                 </div>
             </div>

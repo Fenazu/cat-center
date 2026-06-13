@@ -112,9 +112,21 @@
         .dlist li { display: flex; justify-content: space-between; font-size: .85rem; }
         .dl { font-size: .65rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(244,243,239,.38); }
         .dv { font-weight: 700; color: rgba(244,243,239,.92); }
-        .back-desc { font-size: .83rem; color: rgba(244,243,239,.5); line-height: 1.65; }
         .back-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .back-btns .btn { padding: 11px; font-size: .87rem; }
+        .obs-box { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: .65rem .9rem; }
+        .obs-label { display: block; font-size: .63rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(244,243,239,.38); margin-bottom: .3rem; }
+        .obs-box p { font-size: .84rem; color: rgba(244,243,239,.78); line-height: 1.5; }
+
+        /* MENU ⋯ */
+        .card-menu { position: absolute; top: 26px; right: 26px; z-index: 10; }
+        .card-menu-btn { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,.92); border: none; cursor: pointer; font-size: 1.1rem; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,.12); line-height: 1; padding-bottom: 3px; }
+        .card-menu-btn:hover { background: #fff; }
+        .card-menu-dropdown { display: none; position: absolute; right: 0; top: 38px; background: #fff; border-radius: 12px; box-shadow: 0 8px 28px rgba(0,0,0,.18); min-width: 140px; overflow: hidden; }
+        .card-menu-dropdown.open { display: block; }
+        .card-menu-dropdown a, .card-menu-dropdown button { display: block; width: 100%; padding: .75rem 1.1rem; text-align: left; font-family: 'Nunito', sans-serif; font-size: .9rem; font-weight: 700; color: #3a3a3a; background: none; border: none; cursor: pointer; text-decoration: none; }
+        .card-menu-dropdown a:hover, .card-menu-dropdown button:hover { background: #f7f5f2; }
+        .card-menu-dropdown .del-btn { color: #c0392b; }
 
         /* FOOTER */
         footer { padding: 40px 0 28px; border-top: 1px solid rgba(125,160,184,.18); }
@@ -161,6 +173,16 @@
                         <span th:if="${gato.disponivel.name() == 'SIM'}" class="cg">Disponível</span>
                         <span th:if="${gato.disponivel.name() == 'NAO'}" class="cr">Indisponível</span>
                     </div>
+                    <div class="card-menu">
+                        <button class="card-menu-btn" onclick="toggleMenu(this)">···</button>
+                        <div class="card-menu-dropdown">
+                            <a th:href="@{/gato/{id}/editar(id=${gato.id})}">Editar</a>
+                            <form th:action="@{/gato/{id}/deletar(id=${gato.id})}" method="post"
+                                  onsubmit="return confirm('Remover este gato?')">
+                                <button type="submit" class="del-btn">Remover</button>
+                            </form>
+                        </div>
+                    </div>
                     <img th:if="${gato.foto != null and !#strings.isEmpty(gato.foto)}"
                          th:src="${#strings.startsWith(gato.foto, 'http') ? gato.foto : '/images/gatos/' + gato.foto}"
                          th:alt="${gato.nome}">
@@ -197,8 +219,11 @@
                         <li><span class="dl">Cor</span><span class="dv" th:text="${#strings.capitalize(#strings.toLowerCase(gato.cor))}"></span></li>
                         <li><span class="dl">Pelagem</span><span class="dv" th:text="${#strings.capitalize(#strings.toLowerCase(gato.tipoPelagem))}"></span></li>
                         <li><span class="dl">Castrado</span><span class="dv" th:text="${gato.castrado.name() == 'SIM' ? 'Sim' : 'Não'}"></span></li>
-                        <li><span class="dl">Observações</span><span class="dv" th:text="${gato.comorbidades != null and !#strings.isEmpty(gato.comorbidades) and !#strings.equalsIgnoreCase(gato.comorbidades, 'nenhuma') ? gato.comorbidades : 'Nenhuma'}"></span></li>
                     </ul>
+                    <div class="obs-box">
+                        <span class="obs-label">Observações</span>
+                        <p th:text="${gato.comorbidades != null and !#strings.isEmpty(gato.comorbidades) and !#strings.equalsIgnoreCase(gato.comorbidades, 'nenhuma') ? gato.comorbidades : 'Saudável, sem comorbidades.'}"></p>
+                    </div>
                     <div class="back-btns">
                         <button class="btn btn-inv btn-sm" onclick="voltarCard(this)">← Voltar</button>
                         <a th:if="${gato.disponivel.name() == 'SIM'}" th:href="@{/adotar/{id}(id=${gato.id})}" class="btn btn-coral btn-sm">Quero adotar</a>
@@ -232,6 +257,17 @@
     function voltarCard(btn) {
         btn.closest('.card').classList.remove('virado');
     }
+    function toggleMenu(btn) {
+        const dropdown = btn.nextElementSibling;
+        const isOpen = dropdown.classList.contains('open');
+        document.querySelectorAll('.card-menu-dropdown.open').forEach(d => d.classList.remove('open'));
+        if (!isOpen) dropdown.classList.add('open');
+    }
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.card-menu')) {
+            document.querySelectorAll('.card-menu-dropdown.open').forEach(d => d.classList.remove('open'));
+        }
+    });
 </script>
 </body>
 </html>
