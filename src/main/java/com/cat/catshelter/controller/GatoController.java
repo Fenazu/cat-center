@@ -59,6 +59,13 @@ public class GatoController {
         return nomeArquivo;
     }
 
+    @GetMapping("/gato/{id}")
+    public String detalheGato(Model model, @PathVariable int id) {
+        GatoService gs = context.getBean(GatoService.class);
+        model.addAttribute("gato", gs.obterGato(id));
+        return "gatos/detalhe";
+    }
+
     @GetMapping("/gatos")
     public String listarGatos(Model model) {
         GatoService gs = context.getBean(GatoService.class);

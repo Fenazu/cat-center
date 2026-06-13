@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adoção — Cat Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <style>
+        .detail-card { background:#fff; border-radius:22px; padding:2rem; border:1px solid #eee; max-width:600px; }
+        .detail-fields { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+        .detail-field { background:#f8f7f4; border-radius:12px; padding:.85rem 1rem; }
+        .detail-field label { display:block; font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:#9a9a96; margin-bottom:.2rem; }
+        .detail-field span { font-size:.95rem; font-weight:700; color:#3a3a3a; }
+        .action-row { display:flex; gap:.75rem; margin-top:1.75rem; padding-top:1.25rem; border-top:1px solid #eee; }
+        @media(max-width:500px){ .detail-fields{grid-template-columns:1fr} }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a th:href="@{/}" class="navbar-brand">
+        <img th:src="@{/images/logo.jpeg}" alt="Cat Center">
+    </a>
+    <div class="navbar-links">
+        <a th:href="@{/gatos}">Gatos</a>
+        <a th:href="@{/adotantes}">Adotantes</a>
+        <a th:href="@{/adocoes}" class="active">Adoções</a>
+        <a th:href="@{/adocao/nova}" class="navbar-cta">+ Nova adoção</a>
+    </div>
+</nav>
+
+<div class="page-top">
+    <div>
+        <div class="breadcrumb"><a th:href="@{/adocoes}">Adoções</a> &rsaquo; Adoção #<span th:text="${adocao.id}"></span></div>
+        <h1>Adoção <span th:text="${'#' + adocao.id}"></span></h1>
+    </div>
+</div>
+
+<div class="container">
+    <div class="detail-card">
+        <div class="detail-fields">
+            <div class="detail-field">
+                <label>Gato</label>
+                <span><a th:href="@{/gato/{id}(id=${adocao.idGato})}" th:text="${adocao.nomeGato}"
+                         style="color:inherit;text-decoration:none;border-bottom:1px dotted #FB8A60"></a></span>
+            </div>
+            <div class="detail-field">
+                <label>Adotante</label>
+                <span><a th:href="@{/adotante/{id}(id=${adocao.idAdotante})}" th:text="${adocao.nomeAdotante}"
+                         style="color:inherit;text-decoration:none;border-bottom:1px dotted #FB8A60"></a></span>
+            </div>
+            <div class="detail-field">
+                <label>Data</label>
+                <span th:text="${adocao.data}"></span>
+            </div>
+            <div class="detail-field">
+                <label>Status</label>
+                <span th:text="${adocao.status}"
+                      th:classappend="${adocao.status.name() == 'APROVADA'} ? 'badge badge-green' :
+                                     (${adocao.status.name() == 'CANCELADA'} ? 'badge badge-red' : 'badge badge-yellow')">
+                </span>
+            </div>
+        </div>
+
+        <div class="action-row">
+            <a th:href="@{/adocoes}" class="btn btn-outline btn-sm">← Voltar</a>
+            <a th:href="@{/adocao/{id}/status(id=${adocao.id})}" class="btn btn-primary btn-sm">Alterar status</a>
+            <form th:action="@{/adocao/{id}/deletar(id=${adocao.id})}" method="post"
+                  onsubmit="return confirm('Remover esta adoção?')" style="display:inline">
+                <button type="submit" class="btn btn-ghost btn-sm">Remover</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer>Cat Center &mdash; Sistema de Gestão de Adoções</footer>
+</body>
+</html>

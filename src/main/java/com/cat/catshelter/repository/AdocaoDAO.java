@@ -36,7 +36,11 @@ public class AdocaoDAO {
     }
 
     public Adocao obterAdocao(int id) {
-        String sql = "SELECT * FROM adocoes WHERE id = ?";
+        String sql = "SELECT a.*, g.nome AS nome_gato, ad.nome AS nome_adotante " +
+                     "FROM adocoes a " +
+                     "JOIN gatos g ON g.id = a.id_gato " +
+                     "JOIN adotantes ad ON ad.id = a.id_adotante " +
+                     "WHERE a.id = ?";
         return Adocao.converterRegistro((Map<String, Object>) jdbc.queryForMap(sql, id));
     }
 

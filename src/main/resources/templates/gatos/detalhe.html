@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${gato.nome} + ' — Cat Center'">Gato — Cat Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <style>
+        .detail-grid { display:grid; grid-template-columns:300px 1fr; gap:2rem; align-items:start; }
+        .detail-photo { border-radius:20px; overflow:hidden; background:#f0eeea; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; }
+        .detail-photo img { width:100%; height:100%; object-fit:cover; }
+        .detail-photo .no-photo { color:#bbb; font-size:.9rem; font-weight:700; }
+        .detail-name { font-size:2rem; font-weight:900; margin-bottom:.25rem; }
+        .detail-badge { display:inline-block; margin-bottom:1.25rem; }
+        .detail-fields { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+        .detail-field { background:#f8f7f4; border-radius:12px; padding:.85rem 1rem; }
+        .detail-field label { display:block; font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:#9a9a96; margin-bottom:.2rem; }
+        .detail-field span { font-size:.95rem; font-weight:700; color:#3a3a3a; }
+        .detail-obs { grid-column:1/-1; }
+        .obs-text { font-size:.93rem; font-weight:600; color:#3a3a3a; line-height:1.6; }
+        .action-row { display:flex; gap:.75rem; margin-top:1.75rem; padding-top:1.25rem; border-top:1px solid #eee; }
+        @media(max-width:680px){ .detail-grid{grid-template-columns:1fr} .detail-fields{grid-template-columns:1fr} }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a th:href="@{/}" class="navbar-brand">
+        <img th:src="@{/images/logo.jpeg}" alt="Cat Center">
+    </a>
+    <div class="navbar-links">
+        <a th:href="@{/gatos}" class="active">Gatos</a>
+        <a th:href="@{/adotantes}">Adotantes</a>
+        <a th:href="@{/adocoes}">Adoções</a>
+        <a th:href="@{/gato/novo}" class="navbar-cta">+ Cadastrar</a>
+    </div>
+</nav>
+
+<div class="page-top">
+    <div>
+        <div class="breadcrumb"><a th:href="@{/gatos}">Gatos</a> &rsaquo; <span th:text="${gato.nome}"></span></div>
+        <h1 th:text="${gato.nome}">Nome</h1>
+    </div>
+</div>
+
+<div class="container">
+    <div class="detail-grid">
+
+        <div class="detail-photo">
+            <img th:if="${gato.foto != null and !#strings.isEmpty(gato.foto)}"
+                 th:src="${#strings.startsWith(gato.foto, 'http') ? gato.foto : '/images/gatos/' + gato.foto}"
+                 th:alt="${gato.nome}">
+            <span th:if="${gato.foto == null or #strings.isEmpty(gato.foto)}" class="no-photo">Sem foto</span>
+        </div>
+
+        <div>
+            <div class="detail-fields">
+                <div class="detail-field">
+                    <label>Sexo</label>
+                    <span th:text="${gato.sexo.name() == 'FEMEA' ? 'Fêmea' : 'Macho'}"></span>
+                </div>
+                <div class="detail-field">
+                    <label>Faixa etária</label>
+                    <span th:text="${#strings.capitalize(#strings.toLowerCase(gato.faixaEtaria.name()))}"></span>
+                </div>
+                <div class="detail-field">
+                    <label>Cor</label>
+                    <span th:text="${#strings.capitalize(#strings.toLowerCase(gato.cor))}"></span>
+                </div>
+                <div class="detail-field">
+                    <label>Tipo de pelagem</label>
+                    <span th:text="${gato.tipoPelagem != null ? #strings.capitalize(#strings.toLowerCase(gato.tipoPelagem)) : '—'}"></span>
+                </div>
+                <div class="detail-field">
+                    <label>Castrado</label>
+                    <span th:text="${gato.castrado.name() == 'SIM' ? 'Sim' : 'Não'}"></span>
+                </div>
+                <div class="detail-field">
+                    <label>Status</label>
+                    <span th:if="${gato.disponivel.name() == 'SIM'}" class="badge badge-green">Disponível</span>
+                    <span th:if="${gato.disponivel.name() == 'NAO'}" class="badge badge-red">Indisponível</span>
+                </div>
+                <div class="detail-field detail-obs" th:if="${gato.comorbidades != null and !#strings.isEmpty(gato.comorbidades)}">
+                    <label>Observações</label>
+                    <span class="obs-text" th:text="${gato.comorbidades}"></span>
+                </div>
+            </div>
+
+            <div class="action-row">
+                <a th:href="@{/gatos}" class="btn btn-outline btn-sm">← Voltar</a>
+                <a th:href="@{/gato/{id}/editar(id=${gato.id})}" class="btn btn-primary btn-sm">Editar</a>
+                <form th:action="@{/gato/{id}/deletar(id=${gato.id})}" method="post"
+                      onsubmit="return confirm('Tem certeza que deseja remover este gato?')" style="display:inline">
+                    <button type="submit" class="btn btn-ghost btn-sm">Remover</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer>Cat Center &mdash; Sistema de Gestão de Adoções</footer>
+</body>
+</html>

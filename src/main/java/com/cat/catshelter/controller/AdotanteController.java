@@ -14,6 +14,13 @@ public class AdotanteController {
     @Autowired
     ApplicationContext context;
 
+    @GetMapping("/adotante/{id}")
+    public String detalheAdotante(Model model, @PathVariable int id) {
+        AdotanteService as = context.getBean(AdotanteService.class);
+        model.addAttribute("adotante", as.obterAdotante(id));
+        return "adotantes/detalhe";
+    }
+
     @GetMapping("/adotantes")
     public String listarAdotantes(Model model) {
         AdotanteService as = context.getBean(AdotanteService.class);

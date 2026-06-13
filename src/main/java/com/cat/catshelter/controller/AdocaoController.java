@@ -17,6 +17,13 @@ public class AdocaoController {
     @Autowired
     ApplicationContext context;
 
+    @GetMapping("/adocao/{id}")
+    public String detalheAdocao(Model model, @PathVariable int id) {
+        AdocaoService as = context.getBean(AdocaoService.class);
+        model.addAttribute("adocao", as.obterAdocao(id));
+        return "adocoes/detalhe";
+    }
+
     @GetMapping("/adocoes")
     public String listarAdocoes(Model model) {
         AdocaoService as = context.getBean(AdocaoService.class);

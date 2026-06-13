@@ -49,7 +49,7 @@
             </thead>
             <tbody>
                 <tr th:each="adotante : ${adotantes}">
-                    <td style="font-weight:800" th:text="${adotante.nome}"></td>
+                    <td style="font-weight:800"><a th:href="@{/adotante/{id}(id=${adotante.id})}" th:text="${adotante.nome}" style="color:inherit;text-decoration:none;border-bottom:1px dotted var(--coral)"></a></td>
                     <td th:text="${adotante.cpf}"></td>
                     <td th:text="${adotante.cep}"></td>
                     <td th:text="${adotante.telefone}"></td>
