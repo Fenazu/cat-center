@@ -68,7 +68,10 @@ public class AdocaoDAO {
     }
 
     public void deletarAdocao(int id) {
-        String sql = "DELETE FROM adocoes WHERE id = ?";
-        jdbc.update(sql, id);
+        Integer idGato = jdbc.queryForObject("SELECT id_gato FROM adocoes WHERE id = ?", Integer.class, id);
+        jdbc.update("DELETE FROM adocoes WHERE id = ?", id);
+        if (idGato != null) {
+            jdbc.update("UPDATE gatos SET disponivel = 'SIM' WHERE id = ?", idGato);
+        }
     }
 }
