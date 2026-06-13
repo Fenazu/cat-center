@@ -43,6 +43,7 @@ public class AdocaoController {
 
     @PostMapping("/adocao/nova")
     public String salvarAdocao(@ModelAttribute Adocao adocao) {
+        adocao.setData(java.time.LocalDate.now());
         AdocaoService as = context.getBean(AdocaoService.class);
         as.inserirAdocao(adocao);
         return "redirect:/adocoes";
