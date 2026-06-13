@@ -3,6 +3,7 @@ package com.cat.catshelter.model;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Map;
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class Adocao {
 
@@ -10,6 +11,7 @@ public class Adocao {
     private int idGato;
     private int idAdotante;
     private StatusAdocao status;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate data;
     private String nomeGato;
     private String nomeAdotante;
