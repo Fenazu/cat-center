@@ -120,26 +120,26 @@
 
                 <!-- Campos -->
                 <div class="fields">
-                    <div class="fg"><label>Nome</label><input type="text" th:field="*{nome}" placeholder="Nome do gato"></div>
-                    <div class="fg"><label>Cor</label><input type="text" th:field="*{cor}" placeholder="Ex: laranja, preto"></div>
+                    <div class="fg"><label>Nome</label><input type="text" th:field="*{nome}" placeholder="Nome do gato" required></div>
+                    <div class="fg"><label>Cor</label><input type="text" th:field="*{cor}" placeholder="Ex: laranja, preto" required></div>
                     <div class="fg">
                         <label>Sexo</label>
-                        <select th:field="*{sexo}">
+                        <select th:field="*{sexo}" required>
                             <option value="">Selecione</option>
                             <option th:each="s : ${sexos}" th:value="${s}" th:text="${s}"></option>
                         </select>
                     </div>
                     <div class="fg">
                         <label>Faixa Etária</label>
-                        <select th:field="*{faixaEtaria}">
+                        <select th:field="*{faixaEtaria}" required>
                             <option value="">Selecione</option>
                             <option th:each="f : ${faixasEtarias}" th:value="${f}" th:text="${f}"></option>
                         </select>
                     </div>
-                    <div class="fg"><label>Tipo de Pelagem</label><input type="text" th:field="*{tipoPelagem}" placeholder="Ex: curta, longa"></div>
+                    <div class="fg"><label>Tipo de Pelagem</label><input type="text" th:field="*{tipoPelagem}" placeholder="Ex: curta, longa" required></div>
                     <div class="fg">
                         <label>Castrado</label>
-                        <select th:field="*{castrado}">
+                        <select th:field="*{castrado}" required>
                             <option value="">Selecione</option>
                             <option th:each="c : ${castrados}" th:value="${c}" th:text="${c}"></option>
                         </select>

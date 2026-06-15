@@ -14,6 +14,7 @@ public class AdotanteService {
     AdotanteDAO adotanteDAO;
 
     public void inserirAdotante(Adotante adotante) {
+        validar(adotante);
         adotanteDAO.inserirAdotante(adotante);
     }
 
@@ -30,7 +31,15 @@ public class AdotanteService {
     }
 
     public void atualizarAdotante(int id, Adotante novo) {
+        validar(novo);
         adotanteDAO.atualizarAdotante(id, novo);
+    }
+
+    private void validar(Adotante a) {
+        if (a.getNome() == null || a.getNome().isBlank()) throw new IllegalArgumentException("Nome é obrigatório");
+        if (a.getCpf() == null || a.getCpf().isBlank()) throw new IllegalArgumentException("CPF é obrigatório");
+        if (a.getTelefone() == null || a.getTelefone().isBlank()) throw new IllegalArgumentException("Telefone é obrigatório");
+        if (a.getCep() == null || a.getCep().isBlank()) throw new IllegalArgumentException("CEP é obrigatório");
     }
 
     public void deletarAdotante(int id) {

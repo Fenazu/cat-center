@@ -15,6 +15,7 @@ public class GatoService {
     GatoDAO gatoDAO;
 
     public void inserirGato(Gato gato) {
+        validar(gato);
         gatoDAO.inserirGato(gato);
     }
 
@@ -31,7 +32,17 @@ public class GatoService {
     }
 
     public void atualizarGato(int id, Gato novo) {
+        validar(novo);
         gatoDAO.atualizarGato(id, novo);
+    }
+
+    private void validar(Gato g) {
+        if (g.getNome() == null || g.getNome().isBlank()) throw new IllegalArgumentException("Nome é obrigatório");
+        if (g.getCor() == null || g.getCor().isBlank()) throw new IllegalArgumentException("Cor é obrigatória");
+        if (g.getTipoPelagem() == null || g.getTipoPelagem().isBlank()) throw new IllegalArgumentException("Tipo de pelagem é obrigatório");
+        if (g.getSexo() == null) throw new IllegalArgumentException("Sexo é obrigatório");
+        if (g.getFaixaEtaria() == null) throw new IllegalArgumentException("Faixa etária é obrigatória");
+        if (g.getCastrado() == null) throw new IllegalArgumentException("Campo castrado é obrigatório");
     }
 
     public void atualizarDisponibilidade(int id, Disponivel disponivel) {

@@ -19,6 +19,8 @@ public class AdocaoService {
     GatoService gatoService;
 
     public void inserirAdocao(Adocao adocao) {
+        if (adocao.getIdGato() <= 0) throw new IllegalArgumentException("Selecione um gato");
+        if (adocao.getIdAdotante() <= 0) throw new IllegalArgumentException("Selecione um adotante");
         adocao.setStatus(StatusAdocao.PENDENTE);
         adocaoDAO.inserirAdocao(adocao);
         gatoService.atualizarDisponibilidade(adocao.getIdGato(), Disponivel.NAO);
