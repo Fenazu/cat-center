@@ -32,6 +32,7 @@
 
 <div class="container">
     <div class="form-card">
+        <div th:if="${erro}" class="form-note" style="background:#FEE2E2;border-color:#FCA5A5;color:#991B1B;margin-bottom:1rem" th:text="${erro}"></div>
         <form th:action="@{/adocao/nova}" th:object="${adocao}" method="post">
 
             <div class="form-grid">

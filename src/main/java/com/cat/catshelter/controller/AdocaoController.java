@@ -43,10 +43,17 @@ public class AdocaoController {
     }
 
     @PostMapping("/adocao/nova")
-    public String salvarAdocao(@ModelAttribute Adocao adocao) {
-        adocao.setData(java.time.LocalDate.now());
-        adocaoService.inserirAdocao(adocao);
-        return "redirect:/adocoes";
+    public String salvarAdocao(@ModelAttribute Adocao adocao, Model model) {
+        try {
+            adocao.setData(java.time.LocalDate.now());
+            adocaoService.inserirAdocao(adocao);
+            return "redirect:/adocoes";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("erro", e.getMessage());
+            model.addAttribute("gatos", gatoService.obterGatosDisponiveis());
+            model.addAttribute("adotantes", adotanteService.obterTodosAdotantes());
+            return "adocoes/form";
+        }
     }
 
     @GetMapping("/adocao/{id}/status")
