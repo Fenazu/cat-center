@@ -106,10 +106,10 @@
             <h3>Seus dados</h3>
             <form th:action="@{/adotar/{id}(id=${gato.id})}" th:object="${adotante}" method="post">
                 <div class="form-grid">
-                    <div class="fg full"><label>Nome completo</label><input type="text" th:field="*{nome}" placeholder="Seu nome completo"></div>
-                    <div class="fg"><label>CPF</label><input type="text" th:field="*{cpf}" placeholder="000.000.000-00"></div>
-                    <div class="fg"><label>Telefone</label><input type="text" th:field="*{telefone}" placeholder="(00) 00000-0000"></div>
-                    <div class="fg"><label>CEP</label><input type="text" th:field="*{cep}" placeholder="00000-000"></div>
+                    <div class="fg full"><label>Nome completo</label><input type="text" th:field="*{nome}" placeholder="Seu nome completo" required></div>
+                    <div class="fg"><label>CPF</label><input type="text" th:field="*{cpf}" placeholder="000.000.000-00" required></div>
+                    <div class="fg"><label>Telefone</label><input type="text" th:field="*{telefone}" placeholder="(00) 00000-0000" required></div>
+                    <div class="fg"><label>CEP</label><input type="text" th:field="*{cep}" placeholder="00000-000" required></div>
                 </div>
                 <div class="form-note">A solicitação será registrada como <strong>Pendente</strong>. Entraremos em contato em até 2 dias úteis.</div>
                 <div class="form-footer">

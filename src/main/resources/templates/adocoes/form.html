@@ -39,7 +39,7 @@
                 <div class="form-group">
                     <label>Gato</label>
                     <select th:field="*{idGato}" required>
-                        <option value="">Selecione um gato disponível</option>
+                        <option value="0">Selecione um gato disponível</option>
                         <option th:each="g : ${gatos}" th:value="${g.id}" th:text="'#' + ${g.id} + ' — ' + ${g.nome}"></option>
                     </select>
                 </div>
@@ -47,7 +47,7 @@
                 <div class="form-group">
                     <label>Adotante</label>
                     <select th:field="*{idAdotante}" required>
-                        <option value="">Selecione um adotante</option>
+                        <option value="0">Selecione um adotante</option>
                         <option th:each="a : ${adotantes}" th:value="${a.id}" th:text="'#' + ${a.id} + ' — ' + ${a.nome}"></option>
                     </select>
                 </div>

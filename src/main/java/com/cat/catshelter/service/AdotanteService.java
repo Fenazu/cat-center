@@ -19,6 +19,7 @@ public class AdotanteService {
     }
 
     public int inserirRetornandoId(Adotante adotante) {
+        validar(adotante);
         return adotanteDAO.inserirRetornandoId(adotante);
     }
 
